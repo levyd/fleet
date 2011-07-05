@@ -3,10 +3,9 @@
 
 #include <OgreRoot.h>
 
-#include "GameWindow.h"
 #include "Level.h"
 
-class Application : Ogre::FrameListener {
+class Application : public Ogre::FrameListener, public Ogre::WindowEventListener {
 public:
     Application(void);
     ~Application(void);
@@ -16,13 +15,16 @@ public:
 
 protected:
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& event);
+    virtual void windowClosed(Ogre::RenderWindow rw);
 
 private:
-    Ogre::Root* root;
-
     void LoadResources(const std::string& resourcesCfg);
 
-    GameWindow gameWindow;
+    Ogre::Root* root;
+    Ogre::RenderWindow* window;
+    OIS::InputManager* input;
+    OIS::OISKeyboard* keyboard;
+
     Level level;
 };
 

@@ -4,31 +4,62 @@
 #include "Application.h"
 #include "Controller.h"
 
-//-------------------------------------------------------------------------------------
-Application::Application(void) : root(0) {
+//------------------------------------------------------------------------------
+Application::Application(void) : root(0), window(0), input(0), keyboard(0) {
 }
-//-------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 Application::~Application(void)
 {
+    Ogre::WindowEventUtilities::removeWindowEventListener(window, this);
     delete root;
 }
-//-------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 bool Application::Initialise(void) {
-    root = new Ogre::Root("plugins.cfg");
+    size_t windowHandle = 0;
 
+    root = new Ogre::Root("plugins.cfg");
     if(!(root->restoreConfig() || root->showConfigDialog())) { return false; }
-    gameWindow.Initialise(root->initialise(true, "Fleet"));
+
+    window = root->initialise(true, "Fleet");
+    Ogre::WindowEventUtilities::addWindowEventListener(window, this);
+
+    window->getCustomAttribute("WINDOW", &windowHandle);
+    input = OIS::InputManager::createInputSystem(windowHandle);
+    keyboard = static_cast<OIS::Keyboard*>(input->createInputObject(OIS::OISKeyboard, true));
 
     LoadResources("fleet-resources.cfg");
 
-    Controller::BuildInputManager(gameWindow.window);
-
-    level.Initialise("Level-1");
+    level.Initialise("Level-1", keyboard);
 
     root->addFrameListener(this);
     return true;
 }
-//-------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+void Application::Launch(void)
+{
+    level.Launch(gameWindow.window);
+    root->startRendering();
+}
+//------------------------------------------------------------------------------
+bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
+    if(keyboard->isKeyDown(OIS::KC_ESC)) {
+        windowClosed(window);
+        return false;
+    }
+    if(window->isClosed()) { return false; }
+    if(!level.Update(event.timeSinceLastFrame)) { return false; }
+    return true;
+}
+//------------------------------------------------------------------------------
+virtual void windowClosed(Ogre::RenderWindow* rw) {
+    if(rw != window) { return; }
+    if(input != NULL) {
+        if(keyboard != NULL) { input->destroyInputObject(keyboard); }
+        OIS::InputManager::destroyInputSystem(input);
+        input = 0;
+    }
+}
+//------------------------------------------------------------------------------
 void Application::LoadResources(const std::string& resourcesCfg) {
     Ogre::ConfigFile config;
     Ogre::String secName, typeName, archName;
@@ -52,16 +83,4 @@ void Application::LoadResources(const std::string& resourcesCfg) {
 
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Common");
-}
-//-------------------------------------------------------------------------------------
-void Application::Launch(void)
-{
-    level.Launch(gameWindow.window);
-    root->startRendering();
-}
-//-------------------------------------------------------------------------------------
-bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
-    if(!gameWindow.Update(event.timeSinceLastFrame)) { return false; }
-    if(!level.Update(event.timeSinceLastFrame)) { return false; }
-    return true;
 }

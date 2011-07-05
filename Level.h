@@ -11,7 +11,7 @@ class Level {
 public:
     Level();
     ~Level();
-    void Initialise(const std::string& name);
+    void Initialise(const std::string& name, OIS::OISKeyboard* kb);
     void Launch(Ogre::RenderWindow* window);
     bool Update(Ogre::Real deltaTime);
 
@@ -20,8 +20,9 @@ protected:
     void UnloadResources();
     void BuildScene();
 
-	Ogre::SceneManager* scene;
+    Ogre::SceneManager* scene;
     Ogre::Camera* camera;
+    OIS::OISKeyboard* keyboard;
     std::string name;
 
     Ship* ship;

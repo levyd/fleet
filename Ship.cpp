@@ -2,8 +2,9 @@
 
 #include "Ship.h"
 
-Ship::Ship(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Vector3 position, Ogre::Real kgMass)
-    : Body(sceneMgr, position, name), mass(kgMass), thrustController(10, 5, 1, 5) {
+Ship::Ship(Ogre::SceneManager* sceneMgr, std::string name, OIS::OISKeyboard* kb, \
+    Ogre::Vector3 position, Ogre::Real kgMass)
+    : Body(sceneMgr, position, name), mass(kgMass), thrustController(10, 5, 1, 5, kb) {
 
     Ogre::Entity* entity = sceneMgr->createEntity("Ship/OgreHead", "ogrehead.mesh");
     bodyNode->attachObject(entity);

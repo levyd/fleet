@@ -6,7 +6,8 @@
 
 class Ship : public Body {
 public:
-	Ship(Ogre::SceneManager* sceneMgr, std::string name, Ogre::Vector3 position, Ogre::Real kgMass);
+    Ship(Ogre::SceneManager* sceneMgr, std::string name, OIS::OISKeyboard* kb, \
+        Ogre::Vector3 position, Ogre::Real kgMass);
     virtual ~Ship();
 
     virtual bool Update(Ogre::Real deltaTime);

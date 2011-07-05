@@ -12,9 +12,11 @@ Level::~Level() {
     this->UnloadResources();
 }
 
-void Level::Initialise(const std::string& levelName) {
+void Level::Initialise(const std::string& levelName, OIS::OISKeyboard* kb) {
     this->name = levelName;
     scene = Ogre::Root::getSingleton().createSceneManager(Ogre::ST_GENERIC, levelName);
+
+    keyboard = kb;
 
     this->LoadResources();
     this->BuildScene();
@@ -34,7 +36,7 @@ void Level::BuildScene() {
     camera->lookAt(Ogre::Vector3(0, 0, -300));
     camera->setNearClipDistance(5);
 
-    ship = new Ship(scene, "OgreHead", Ogre::Vector3(0, 0, 0), 1000);
+    ship = new Ship(scene, "OgreHead", keyboard, Ogre::Vector3(0, 0, 0), 1000);
 
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 }
