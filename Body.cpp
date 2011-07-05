@@ -1,0 +1,16 @@
+#include "Body.h"
+
+Body::Body(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position, std::string bodyName)
+    : name(bodyName), velocity(0, 0, 0) {
+    bodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
+    bodyNode->translate(position);
+}
+
+Body::~Body() {
+}
+
+bool Body::Update(Ogre::Real deltaTime) {
+    bodyNode->translate(velocity * deltaTime);
+    return true;
+}
+
