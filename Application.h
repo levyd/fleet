@@ -2,6 +2,8 @@
 #define __APPLICATION_H_
 
 #include <OgreRoot.h>
+#include <OgreRenderWindow.h>
+#include <OgreWindowEventUtilities.h>
 
 #include "Level.h"
 
@@ -15,7 +17,7 @@ public:
 
 protected:
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& event);
-    virtual void windowClosed(Ogre::RenderWindow rw);
+    virtual void windowClosed(Ogre::RenderWindow* rw);
 
 private:
     void LoadResources(const std::string& resourcesCfg);
@@ -23,7 +25,7 @@ private:
     Ogre::Root* root;
     Ogre::RenderWindow* window;
     OIS::InputManager* input;
-    OIS::OISKeyboard* keyboard;
+    OIS::Keyboard* keyboard;
 
     Level level;
 };

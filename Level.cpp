@@ -2,6 +2,7 @@
 #include <OgreEntity.h>
 #include <OgreViewport.h>
 
+#include <OgreStringConverter.h>
 #include "Level.h"
 
 Level::Level() : scene(0), camera(0) {
@@ -12,7 +13,7 @@ Level::~Level() {
     this->UnloadResources();
 }
 
-void Level::Initialise(const std::string& levelName, OIS::OISKeyboard* kb) {
+void Level::Initialise(const std::string& levelName, OIS::Keyboard* kb) {
     this->name = levelName;
     scene = Ogre::Root::getSingleton().createSceneManager(Ogre::ST_GENERIC, levelName);
 
@@ -32,11 +33,12 @@ void Level::UnloadResources() {
 
 void Level::BuildScene() {
     camera = scene->createCamera("Camera");
-    camera->setPosition(Ogre::Vector3(0, 0, 80));
-    camera->lookAt(Ogre::Vector3(0, 0, -300));
+    camera->setPosition(Ogre::Vector3(0, 100, 0));
+    camera->lookAt(Ogre::Vector3(0, 0, 1));
     camera->setNearClipDistance(5);
 
-    ship = new Ship(scene, "OgreHead", keyboard, Ogre::Vector3(0, 0, 0), 1000);
+    ship = new Ship(scene, "OgreHead", keyboard, Ogre::Vector3(0, 0, 0), 100);
+    //ship->GetSceneNode()->createChildSceneNode(Ogre::Vector3(0, 10, 0), Ogre::Quaternion(1, 0, 0, 0))->attachObject(camera);
 
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 }
@@ -49,5 +51,6 @@ void Level::Launch(Ogre::RenderWindow* window) {
 }
 
 bool Level::Update(Ogre::Real deltaTime) {
-    return true;
+	Ogre::LogManager::getSingleton().logMessage("Ship at:" + Ogre::StringConverter::toString(ship->GetPosition()));
+    return ship->Update(deltaTime);
 }

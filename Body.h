@@ -9,11 +9,14 @@ public:
     virtual ~Body();
       
     virtual bool Update(Ogre::Real deltaTime);
+    const Ogre::Vector3 GetPosition() { return this->bodyNode->getPosition(); }
+    Ogre::SceneNode* GetSceneNode() { return this->bodyNode; }
 
 protected:
     Ogre::SceneNode* bodyNode;
     const std::string name;
     Ogre::Vector3 velocity;
+    Ogre::Quaternion angular;
 
 };
 

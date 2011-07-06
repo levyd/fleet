@@ -1,20 +1,22 @@
 #include "ThrustController.h"
 
+#include <OgreLogManager.h>
 namespace Controller {
-    Thrust::Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Real rot)
-        : Controller(), thrust(0, 0, 0), torque(0, 0) {
+    Thrust::Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian rot)
+        : Controller(), thrust(0, 0, 0), torque(0, 0, 0), maxForward(fwd), \
+          maxReverse(rev), maxLateral(lat), maxRotation(rot) {
     }
     //--------------------------------------------------------------------------
     Thrust::~Thrust() {
     }
     //--------------------------------------------------------------------------
-    ThrustPlayer::ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Real rot, \
-        OIS::OISKeyboard kb) : Thrust(fwd, rev, lat, rot) {
+    ThrustPlayer::ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian rot, \
+        OIS::Keyboard* kb) : Thrust(fwd, rev, lat, rot) {
         keyboard = kb;
         keyboard->setEventCallback(this);
     }
     //--------------------------------------------------------------------------
-    Thrust::~ThrustPlayer() {
+    ThrustPlayer::~ThrustPlayer() {
     }
     //--------------------------------------------------------------------------
     bool ThrustPlayer::Update(Ogre::Real deltaTime) {
@@ -25,28 +27,28 @@ namespace Controller {
     bool ThrustPlayer::keyPressed(const OIS::KeyEvent& event) {
         switch(event.key) {
         case OIS::KC_W:
-            thrust.x += maxForward;
+            thrust.z += maxForward;
             break;
         case OIS::KC_A:
-            thrust.z -= maxLateral;
+            thrust.x += maxLateral;
             break;
         case OIS::KC_S:
-            thrust.x -= maxReverse;
+            thrust.z -= maxReverse;
             break;
         case OIS::KC_D:
-            thrust.z += maxLateral;
+            thrust.x -= maxLateral;
             break;
         case OIS::KC_UP:
-            torque.x += maxRotation;
+            torque = torque * Ogre::Quaternion(-maxRotation, Ogre::Vector3::UNIT_X);
             break;
         case OIS::KC_LEFT:
-            torque.y += maxRotation;
+            torque = torque * Ogre::Quaternion(maxRotation, Ogre::Vector3::UNIT_Y);
             break;
         case OIS::KC_DOWN:
-            torque.x -= maxRotation;
+            torque = torque * Ogre::Quaternion(maxRotation, Ogre::Vector3::UNIT_X);
             break;
         case OIS::KC_RIGHT:
-            torque.y -= maxRotation;
+            torque = torque * Ogre::Quaternion(-maxRotation, Ogre::Vector3::UNIT_Y);
             break;
         default:
             return false;
@@ -69,17 +71,17 @@ namespace Controller {
             thrust.z -= maxLateral;
             break;
         case OIS::KC_UP:
-            torque.x -= maxRotation;
-            break;
+        	torque = torque * Ogre::Quaternion(maxRotation, Ogre::Vector3::UNIT_X);
+        	break;
         case OIS::KC_LEFT:
-            torque.y -= maxRotation;
-            break;
+        	torque = torque * Ogre::Quaternion(-maxRotation, Ogre::Vector3::UNIT_Y);
+        	break;
         case OIS::KC_DOWN:
-            torque.x += maxRotation;
-            break;
+        	torque = torque * Ogre::Quaternion(-maxRotation, Ogre::Vector3::UNIT_X);
+        	break;
         case OIS::KC_RIGHT:
-            torque.y += maxRotation;
-            break;
+        	torque = torque * Ogre::Quaternion(maxRotation, Ogre::Vector3::UNIT_Y);
+        	break;
         default:
           return false;
         }

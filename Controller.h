@@ -1,6 +1,8 @@
 #ifndef _CONTROLLER_H
 #define _CONTROLLER_H
 
+#include <OgrePrerequisites.h>
+
 namespace Controller {
     class Controller {
     public:

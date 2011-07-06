@@ -1,37 +1,44 @@
 #ifndef _THRUST_CONTROLLER_H
 #define _THRUST_CONTROLLER_H
 
+//#include <OgreVector2.h>
+#include <OgreVector3.h>
+
 #include <OISInputManager.h>
 #include <OISEvents.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
 
+#include "Controller.h"
+
 namespace Controller {
     class Thrust : public Controller {
     public:
-        Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Real rot);
+        Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian rot);
         virtual ~Thrust();
 
-        virtual bool Update(Ogre::Real deltaTime);
+        virtual bool Update(Ogre::Real deltaTime) = 0;
 
         // Controller vectors use LOCAL coordinates
         Ogre::Vector3 thrust;
-        Ogre::Vector2 torque;
+        Ogre::Quaternion torque;
 
     protected:
-        Ogre::Real maxForward, maxReverse, maxLateral, maxRotation;
+        Ogre::Real maxForward, maxReverse, maxLateral;
+        Ogre::Radian maxRotation;
     };
 
     class ThrustPlayer : public Thrust, public OIS::KeyListener {
     public:
-        ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Real rot, OIS::OISKeyboard* kb);
-        virtual ~Thrust();
+        ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian rot, OIS::Keyboard* kb);
+        virtual ~ThrustPlayer();
 
         virtual bool Update(Ogre::Real deltaTime);
 
     protected:
         OIS::Keyboard* keyboard;
-        virtual bool keyPressed(const OIS::KeyEvent& event) = 0;
-        virtual bool keyReleased(const OIS::KeyEvent& event) = 0;
+        virtual bool keyPressed(const OIS::KeyEvent& event);
+        virtual bool keyReleased(const OIS::KeyEvent& event);
+    };
 }
 #endif

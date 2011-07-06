@@ -1,5 +1,4 @@
 #include <OgreConfigFile.h>
-#include <OgreRenderWindow.h>
 
 #include "Application.h"
 #include "Controller.h"
@@ -8,8 +7,7 @@
 Application::Application(void) : root(0), window(0), input(0), keyboard(0) {
 }
 //------------------------------------------------------------------------------
-Application::~Application(void)
-{
+Application::~Application(void) {
     Ogre::WindowEventUtilities::removeWindowEventListener(window, this);
     delete root;
 }
@@ -35,14 +33,13 @@ bool Application::Initialise(void) {
     return true;
 }
 //------------------------------------------------------------------------------
-void Application::Launch(void)
-{
-    level.Launch(gameWindow.window);
+void Application::Launch(void) {
+    level.Launch(window);
     root->startRendering();
 }
 //------------------------------------------------------------------------------
 bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
-    if(keyboard->isKeyDown(OIS::KC_ESC)) {
+    if(keyboard->isKeyDown(OIS::KC_ESCAPE)) {
         windowClosed(window);
         return false;
     }
@@ -51,7 +48,7 @@ bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
     return true;
 }
 //------------------------------------------------------------------------------
-virtual void windowClosed(Ogre::RenderWindow* rw) {
+void Application::windowClosed(Ogre::RenderWindow* rw) {
     if(rw != window) { return; }
     if(input != NULL) {
         if(keyboard != NULL) { input->destroyInputObject(keyboard); }
@@ -67,13 +64,11 @@ void Application::LoadResources(const std::string& resourcesCfg) {
     config.load(resourcesCfg);
 
     Ogre::ConfigFile::SectionIterator sections = config.getSectionIterator();
-    while (sections.hasMoreElements())
-    {
+    while (sections.hasMoreElements()) {
         secName = sections.peekNextKey();
         Ogre::ConfigFile::SettingsMultiMap *settings = sections.getNext();
         Ogre::ConfigFile::SettingsMultiMap::iterator i;
-        for (i = settings->begin(); i != settings->end(); ++i)
-        {
+        for (i = settings->begin(); i != settings->end(); ++i) {
             typeName = i->first;
             archName = i->second;
             Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
@@ -84,3 +79,4 @@ void Application::LoadResources(const std::string& resourcesCfg) {
     Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Common");
 }
+

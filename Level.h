@@ -5,13 +5,15 @@
 #include <OgreRenderWindow.h>
 #include <OgreSceneManager.h>
 
+#include <OISKeyboard.h>
+
 #include "Ship.h"
 
 class Level {
 public:
     Level();
     ~Level();
-    void Initialise(const std::string& name, OIS::OISKeyboard* kb);
+    void Initialise(const std::string& name, OIS::Keyboard* kb);
     void Launch(Ogre::RenderWindow* window);
     bool Update(Ogre::Real deltaTime);
 
@@ -22,7 +24,7 @@ protected:
 
     Ogre::SceneManager* scene;
     Ogre::Camera* camera;
-    OIS::OISKeyboard* keyboard;
+    OIS::Keyboard* keyboard;
     std::string name;
 
     Ship* ship;

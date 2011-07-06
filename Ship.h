@@ -1,12 +1,14 @@
 #ifndef _SHIP_H_
 #define _SHIP_H_
 
+#include <OISKeyboard.h>
+
 #include "Body.h"
-#include "Controller.h"
+#include "ThrustController.h"
 
 class Ship : public Body {
 public:
-    Ship(Ogre::SceneManager* sceneMgr, std::string name, OIS::OISKeyboard* kb, \
+    Ship(Ogre::SceneManager* sceneMgr, std::string name, OIS::Keyboard* kb, \
         Ogre::Vector3 position, Ogre::Real kgMass);
     virtual ~Ship();
 
@@ -14,8 +16,8 @@ public:
 
 protected:
     const Ogre::Real mass;
-    //Ogre::Vector3 moment;
-    Controller::Thrust thrustController;
+    const Ogre::Real moment; // Same moment for all axes! Whee!
+    Controller::ThrustPlayer thrustController;
     //Controller::Turret laserController;
 };
 
