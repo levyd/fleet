@@ -2,7 +2,6 @@
 #include <OgreEntity.h>
 #include <OgreViewport.h>
 
-#include <OgreStringConverter.h>
 #include "Level.h"
 
 Level::Level() : scene(0), camera(0) {
@@ -51,6 +50,5 @@ void Level::Launch(Ogre::RenderWindow* window) {
 }
 
 bool Level::Update(Ogre::Real deltaTime) {
-	Ogre::LogManager::getSingleton().logMessage("Ship at:" + Ogre::StringConverter::toString(ship->GetPosition()));
     return ship->Update(deltaTime);
 }

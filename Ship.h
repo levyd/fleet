@@ -9,14 +9,13 @@
 class Ship : public Body {
 public:
     Ship(Ogre::SceneManager* sceneMgr, std::string name, OIS::Keyboard* kb, \
-        Ogre::Vector3 position, Ogre::Real kgMass);
+        Ogre::Vector3 position, Ogre::Real MgMass);
     virtual ~Ship();
 
     virtual bool Update(Ogre::Real deltaTime);
 
 protected:
     const Ogre::Real mass;
-    const Ogre::Real moment; // Same moment for all axes! Whee!
     Controller::ThrustPlayer thrustController;
     //Controller::Turret laserController;
 };

@@ -11,7 +11,7 @@ Body::~Body() {
 
 bool Body::Update(Ogre::Real deltaTime) {
     bodyNode->translate(velocity * deltaTime);
-    bodyNode->rotate(angular * deltaTime);
+    bodyNode->rotate(Ogre::Quaternion::Slerp(deltaTime, Ogre::Quaternion::IDENTITY, angular));
     return true;
 }
 

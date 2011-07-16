@@ -14,7 +14,7 @@
 namespace Controller {
     class Thrust : public Controller {
     public:
-        Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian rot);
+        Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian horiz, Ogre::Radian vert);
         virtual ~Thrust();
 
         virtual bool Update(Ogre::Real deltaTime) = 0;
@@ -24,13 +24,14 @@ namespace Controller {
         Ogre::Quaternion torque;
 
     protected:
-        Ogre::Real maxForward, maxReverse, maxLateral;
-        Ogre::Radian maxRotation;
+        Ogre::Real thrustForward, thrustReverse, thrustLateral;
+        Ogre::Radian torqueHorizontal, torqueVertical;
     };
 
     class ThrustPlayer : public Thrust, public OIS::KeyListener {
     public:
-        ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian rot, OIS::Keyboard* kb);
+        ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat,
+        		Ogre::Radian horiz, Ogre::Radian vert, OIS::Keyboard* kb);
         virtual ~ThrustPlayer();
 
         virtual bool Update(Ogre::Real deltaTime);
