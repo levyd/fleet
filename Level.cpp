@@ -18,7 +18,7 @@ void Level::Initialise(const std::string& levelName, OIS::Keyboard* kb) {
 
     keyboard = kb;
 
-    this->LoadResources();
+    //this->LoadResources();
     this->BuildScene();
 }
 
@@ -31,13 +31,13 @@ void Level::UnloadResources() {
 }
 
 void Level::BuildScene() {
-    camera = scene->createCamera("Camera");
-    camera->setPosition(Ogre::Vector3(0, 100, 0));
-    camera->lookAt(Ogre::Vector3(0, 0, 1));
-    camera->setNearClipDistance(5);
+	scene->setSkyBox(true, "Sky/Stars");
+    ship = new Ship(scene, "Cruiser", keyboard, Ogre::Vector3(0, 0, 0), 100);
 
-    ship = new Ship(scene, "OgreHead", keyboard, Ogre::Vector3(0, 0, 0), 100);
-    //ship->GetSceneNode()->createChildSceneNode(Ogre::Vector3(0, 10, 0), Ogre::Quaternion(1, 0, 0, 0))->attachObject(camera);
+    camera = scene->createCamera("Camera");
+    camera->setNearClipDistance(5);
+    ship->GetSceneNode()->createChildSceneNode(Ogre::Vector3(0, 20, 120), Ogre::Quaternion(1, 0, 0, 0))->attachObject(camera);
+    camera->lookAt(Ogre::Vector3(0, 0, 0));
 
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 }

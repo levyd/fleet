@@ -2,22 +2,24 @@
 
 #include <OgreLogManager.h>
 namespace Controller {
-    Thrust::Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian horiz, Ogre::Radian vert)
+    Thrust::Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll)
         : Controller(),
           thrust(0, 0, 0),
-          torque(Ogre::Quaternion::IDENTITY),
+          torqueX(0), torqueY(0), torqueZ(0),
           thrustForward(fwd),
           thrustReverse(rev),
           thrustLateral(lat),
-          torqueHorizontal(horiz),
-          torqueVertical(vert) {
+          torqueYaw(yaw),
+          torquePitch(pitch),
+          torqueRoll(roll) {
     }
     //--------------------------------------------------------------------------
     Thrust::~Thrust() {
     }
     //--------------------------------------------------------------------------
-    ThrustPlayer::ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian horiz, Ogre::Radian vert, \
-        OIS::Keyboard* kb) : Thrust(fwd, rev, lat, horiz, vert) {
+    ThrustPlayer::ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, \
+        Ogre::Radian pitch, Ogre::Radian roll, OIS::Keyboard* kb)
+        : Thrust(fwd, rev, lat, yaw, pitch, roll) {
         keyboard = kb;
         keyboard->setEventCallback(this);
     }
@@ -44,21 +46,34 @@ namespace Controller {
         case OIS::KC_D:
             thrust.x -= thrustLateral;
             break;
-        case OIS::KC_UP:
-            torque = torque * Ogre::Quaternion(-torqueVertical, Ogre::Vector3::UNIT_X);
-            break;
-        case OIS::KC_LEFT:
-            torque = torque * Ogre::Quaternion(torqueHorizontal, Ogre::Vector3::UNIT_Y);
-            break;
         case OIS::KC_DOWN:
-            torque = torque * Ogre::Quaternion(torqueVertical, Ogre::Vector3::UNIT_X);
-            break;
+        case OIS::KC_NUMPAD2:
+        case OIS::KC_NUMPAD5:
+        	torqueX = torqueX - torquePitch;
+        	break;
+        case OIS::KC_LEFT:
+        case OIS::KC_NUMPAD4:
+        	torqueY = torqueY - torqueYaw;
+        	break;
         case OIS::KC_RIGHT:
-            torque = torque * Ogre::Quaternion(-torqueHorizontal, Ogre::Vector3::UNIT_Y);
-            break;
+        case OIS::KC_NUMPAD6:
+        	torqueY = torqueY + torqueYaw;
+        	break;
+        case OIS::KC_NUMPAD7:
+        	torqueZ = torqueZ - torqueRoll;
+        	break;
+        case OIS::KC_UP:
+        case OIS::KC_NUMPAD8:
+        	torqueX = torqueX + torquePitch;
+        	break;
+        case OIS::KC_NUMPAD9:
+        	torqueZ = torqueZ + torqueRoll;
+        	break;
         case OIS::KC_SPACE:
         	thrust = Ogre::Vector3::ZERO;
-        	torque = Ogre::Quaternion::IDENTITY;
+        	torqueX = 0;
+        	torqueY = 0;
+        	torqueZ = 0;
         	break;
         default:
             return false;
@@ -80,17 +95,28 @@ namespace Controller {
          case OIS::KC_D:
              thrust.x += thrustLateral;
              break;
-        case OIS::KC_UP:
-        	torque = torque * Ogre::Quaternion(torqueVertical, Ogre::Vector3::UNIT_X);
+        case OIS::KC_DOWN:
+        case OIS::KC_NUMPAD2:
+        case OIS::KC_NUMPAD5:
+        	torqueX = torqueX + torquePitch;
         	break;
         case OIS::KC_LEFT:
-        	torque = torque * Ogre::Quaternion(-torqueHorizontal, Ogre::Vector3::UNIT_Y);
-        	break;
-        case OIS::KC_DOWN:
-        	torque = torque * Ogre::Quaternion(-torqueVertical, Ogre::Vector3::UNIT_X);
+        case OIS::KC_NUMPAD4:
+        	torqueY = torqueY + torqueYaw;
         	break;
         case OIS::KC_RIGHT:
-        	torque = torque * Ogre::Quaternion(torqueVertical, Ogre::Vector3::UNIT_Y);
+        case OIS::KC_NUMPAD6:
+        	torqueY = torqueY - torqueYaw;
+        	break;
+        case OIS::KC_NUMPAD7:
+        	torqueZ = torqueZ + torqueRoll;
+        	break;
+        case OIS::KC_UP:
+        case OIS::KC_NUMPAD8:
+        	torqueX = torqueX - torquePitch;
+        	break;
+        case OIS::KC_NUMPAD9:
+        	torqueZ = torqueZ - torqueRoll;
         	break;
         default:
           return false;

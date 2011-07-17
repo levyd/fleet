@@ -8,7 +8,9 @@ Application::Application(void) : root(0), window(0), input(0), keyboard(0) {
 }
 //------------------------------------------------------------------------------
 Application::~Application(void) {
+
     Ogre::WindowEventUtilities::removeWindowEventListener(window, this);
+    windowClosed(window);
     delete root;
 }
 //------------------------------------------------------------------------------
@@ -25,7 +27,7 @@ bool Application::Initialise(void) {
     input = OIS::InputManager::createInputSystem(windowHandle);
     keyboard = static_cast<OIS::Keyboard*>(input->createInputObject(OIS::OISKeyboard, true));
 
-    LoadResources("fleet-resources.cfg");
+    LoadResources("Resources.cfg");
 
     level.Initialise("Level-1", keyboard);
 

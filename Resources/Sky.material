@@ -1,0 +1,13 @@
+material Sky/Stars
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                cubic_texture stars.jpg separateUV
+            }
+        }
+    }
+}
