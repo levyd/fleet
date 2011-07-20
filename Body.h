@@ -5,7 +5,7 @@
 
 class Body {
 public:
-	Body(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position, std::string bodyName);
+	Body(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position);
     virtual ~Body();
       
     virtual bool Update(Ogre::Real deltaTime);
@@ -14,7 +14,6 @@ public:
 
 protected:
     Ogre::SceneNode* bodyNode;
-    const std::string name;
     Ogre::Vector3 velocity;
     Ogre::Quaternion angular;
 

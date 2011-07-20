@@ -41,5 +41,15 @@ namespace Controller {
         virtual bool keyPressed(const OIS::KeyEvent& event);
         virtual bool keyReleased(const OIS::KeyEvent& event);
     };
+
+    class ThrustAI : public Thrust {
+    public:
+    	ThrustAI(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll);
+    	virtual ~ThrustAI();
+
+    	virtual bool Update(Ogre::Real deltaTime);
+    private:
+    	int timer;
+    };
 }
 #endif

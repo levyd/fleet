@@ -8,15 +8,14 @@
 
 class Ship : public Body {
 public:
-    Ship(Ogre::SceneManager* sceneMgr, std::string name, OIS::Keyboard* kb, \
-        Ogre::Vector3 position, Ogre::Real MgMass);
+    Ship(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position);
+    Ship(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position, OIS::Keyboard* kb);
     virtual ~Ship();
 
     virtual bool Update(Ogre::Real deltaTime);
 
 protected:
-    const Ogre::Real mass;
-    Controller::ThrustPlayer thrustController;
+    Controller::Thrust* thrustController;
     //Controller::Turret laserController;
 };
 

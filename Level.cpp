@@ -8,6 +8,7 @@ Level::Level() : scene(0), camera(0) {
 }
 
 Level::~Level() {
+	if(ship != NULL) { delete ship; }
     if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
     this->UnloadResources();
 }
@@ -32,14 +33,20 @@ void Level::UnloadResources() {
 
 void Level::BuildScene() {
 	scene->setSkyBox(true, "Sky/Stars");
-    ship = new Ship(scene, "Cruiser", keyboard, Ogre::Vector3(0, 0, 0), 100);
+    scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
+
+    Ogre::SceneNode* planet = scene->getRootSceneNode()->createChildSceneNode("Planet", Ogre::Vector3(200, 0, 0), Ogre::Quaternion::IDENTITY);
+	planet->attachObject(scene->createEntity("Planet", Ogre::SceneManager::PT_SPHERE));
+
+    Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
+	light->attachObject(scene->createLight("Light"));
+
+    ship = new Ship(scene, Ogre::Vector3(0, 0, 0), keyboard);
 
     camera = scene->createCamera("Camera");
     camera->setNearClipDistance(5);
-    ship->GetSceneNode()->createChildSceneNode(Ogre::Vector3(0, 20, 120), Ogre::Quaternion(1, 0, 0, 0))->attachObject(camera);
+    ship->GetSceneNode()->createChildSceneNode(Ogre::Vector3(0, 20, 120), Ogre::Quaternion::IDENTITY)->attachObject(camera);
     camera->lookAt(Ogre::Vector3(0, 0, 0));
-
-    scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 }
 
 void Level::Launch(Ogre::RenderWindow* window) {

@@ -26,9 +26,7 @@
 								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1618268473" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.1755901474" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.398816964" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${OGRE-INC}/OgreMain/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${OGRE-LIB}/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${OGRE-INC}/Samples/Common/include&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/include/OGRE"/>
 									<listOptionValue builtIn="false" value="/usr/include/OIS"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1387710628" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -118,6 +116,7 @@
 		<resource resourceType="PROJECT" workspacePath="/fleet"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
 		<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
@@ -143,7 +142,7 @@
 				</scannerInfoProvider>
 			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1754763724;cdt.managedbuild.config.gnu.exe.release.1754763724.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1528810289;cdt.managedbuild.tool.gnu.cpp.compiler.input.2106056956">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1848519338;cdt.managedbuild.config.gnu.exe.debug.1848519338.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.350953688;cdt.managedbuild.tool.gnu.cpp.compiler.input.1387710628">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
 				<buildOutputProvider>
@@ -156,7 +155,7 @@
 				</scannerInfoProvider>
 			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1848519338;cdt.managedbuild.config.gnu.exe.debug.1848519338.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.350953688;cdt.managedbuild.tool.gnu.cpp.compiler.input.1387710628">
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.1754763724;cdt.managedbuild.config.gnu.exe.release.1754763724.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.1528810289;cdt.managedbuild.tool.gnu.cpp.compiler.input.2106056956">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.managedbuilder.core.GCCManagedMakePerProjectProfileCPP"/>
 			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile">
 				<buildOutputProvider>
@@ -183,5 +182,4 @@
 			</profile>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
