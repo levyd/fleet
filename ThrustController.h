@@ -1,13 +1,11 @@
 #ifndef _THRUST_CONTROLLER_H
 #define _THRUST_CONTROLLER_H
 
-//#include <OgreVector2.h>
 #include <OgreVector3.h>
 
 #include <OISInputManager.h>
 #include <OISEvents.h>
 #include <OISKeyboard.h>
-#include <OISMouse.h>
 
 #include "Controller.h"
 

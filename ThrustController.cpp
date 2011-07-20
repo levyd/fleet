@@ -18,8 +18,7 @@ namespace Controller {
     //--------------------------------------------------------------------------
     ThrustPlayer::ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, \
         Ogre::Radian pitch, Ogre::Radian roll, OIS::Keyboard* kb)
-        : Thrust(fwd, rev, lat, yaw, pitch, roll) {
-        keyboard = kb;
+        : Thrust(fwd, rev, lat, yaw, pitch, roll), keyboard(kb) {
         keyboard->setEventCallback(this);
     }
     //--------------------------------------------------------------------------
