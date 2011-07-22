@@ -3,7 +3,6 @@
 
 #include <OgreCamera.h>
 #include <OgreSceneNode.h>
-#include <OgreVector3.h>
 
 #include <OISInputManager.h>
 #include <OISEvents.h>
@@ -23,11 +22,13 @@ namespace Controller {
 
         // Controller vectors use LOCAL coordinates
         Ogre::Vector3 thrust;
-        Ogre::Radian torqueX, torqueY, torqueZ;
+        Ogre::Quaternion torque;
 
     protected:
+        void SetTorque();
         Ogre::Real thrustForward, thrustReverse, thrustLateral;
         Ogre::Radian torqueYaw, torquePitch, torqueRoll;
+        Ogre::Radian torqueX, torqueY, torqueZ;
     };
 
     class ThrustPlayer : public Thrust, public OIS::KeyListener {

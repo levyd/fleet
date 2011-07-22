@@ -1,7 +1,7 @@
 #include "Body.h"
 
 Body::Body(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position)
-    : velocity(0, 0, 0), angular(Ogre::Quaternion::IDENTITY) {
+    : scene(sceneMgr), velocity(0, 0, 0), angular(Ogre::Quaternion::IDENTITY) {
     bodyNode = sceneMgr->getRootSceneNode()->createChildSceneNode();
     bodyNode->translate(position);
 }

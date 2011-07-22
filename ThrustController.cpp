@@ -3,14 +3,10 @@
 namespace Controller {
     Thrust::Thrust()
         : Controller(),
-          thrust(0, 0, 0),
-          torqueX(0), torqueY(0), torqueZ(0),
-          thrustForward(0),
-          thrustReverse(0),
-          thrustLateral(0),
-          torqueYaw(0),
-          torquePitch(0),
-          torqueRoll(0) {
+          thrust(0, 0, 0), torque(Ogre::Quaternion::IDENTITY),
+          thrustForward(0), thrustReverse(0), thrustLateral(0),
+          torqueYaw(0), torquePitch(0), torqueRoll(0),
+          torqueX(0), torqueY(0), torqueZ(0) {
     }
 
     Thrust::~Thrust() {
@@ -24,6 +20,11 @@ namespace Controller {
         torqueYaw = yaw;
         torquePitch = pitch;
         torqueRoll = roll;
+    }
+    void SetTorque() {
+        torque = Ogre::Quaternion(torqueX, Ogre::Vector3::UNIT_X)
+               * Ogre::Quaternion(torqueY, Ogre::Vector3::UNIT_Y)
+               * Ogre::Quaternion(torqueZ, Ogre::Vector3::UNIT_Z);
     }
     //--------------------------------------------------------------------------
     ThrustPlayer::ThrustPlayer(Ogre::SceneNode*& bodyNode, Ogre::Vector3 offset, \
@@ -88,6 +89,7 @@ namespace Controller {
         default:
             break;
         }
+        SetTorque();
         return true;
     }
 
@@ -131,6 +133,7 @@ namespace Controller {
         default:
             break;
         }
+        SetTorque();
         return true;
     }
     //--------------------------------------------------------------------------

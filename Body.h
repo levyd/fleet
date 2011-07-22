@@ -13,6 +13,7 @@ public:
     Ogre::SceneNode* GetSceneNode() { return this->bodyNode; }
 
 protected:
+    Ogre::SceneManager* scene;
     Ogre::SceneNode* bodyNode;
     Ogre::Vector3 velocity;
     Ogre::Quaternion angular;
