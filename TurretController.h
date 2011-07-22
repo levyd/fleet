@@ -2,6 +2,7 @@
 #define _TURRET_CONTROLLER_H
 
 #include <OgreVector3.h>
+#include <OgreSceneManager.h>
 
 #include <OISInputManager.h>
 #include <OISEvents.h>
@@ -12,17 +13,21 @@
 namespace Controller {
     class Turret : public Controller {
     public:
-        Turret();
+        Turret(Ogre::SceneNode* bodyNode, Ogre::Vector3 offset, Ogre::Quaternion rotation);
         virtual ~Turret();
 
         virtual bool Update(Ogre::Real deltaTime) = 0;
 
     protected:
+        Ogre::SceneNode* baseNode;
+        Ogre::SceneNode* turretNode;
+        Ogre::Radian rotationX, rotationY;
+        Ogre::Radian trackingSpeed;
     };
 
     class TurretPlayer : public Turret, public OIS::KeyListener {
     public:
-        TurretPlayer(OIS::Keyboard* kb);
+        TurretPlayer(Ogre::SceneNode* bodyNode, Ogre::Vector3 offset, Ogre::Quaternion rotation, OIS::Keyboard* kb, Ogre::Camera* camera);
         virtual ~TurretPlayer();
 
         virtual bool Update(Ogre::Real deltaTime);
@@ -35,7 +40,7 @@ namespace Controller {
 
     class TurretAI : public Turret {
     public:
-    	TurretAI();
+    	TurretAI(Ogre::SceneNode* bodyNode, Ogre::Vector3 offset, Ogre::Quaternion rotation);
     	virtual ~TurretAI();
 
     	virtual bool Update(Ogre::Real deltaTime);

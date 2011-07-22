@@ -41,12 +41,9 @@ void Level::BuildScene() {
     Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
 	light->attachObject(scene->createLight("Light"));
 
-    ship = new Ship(scene, Ogre::Vector3(0, 0, 0), keyboard);
-
     camera = scene->createCamera("Camera");
     camera->setNearClipDistance(5);
-    ship->GetSceneNode()->createChildSceneNode(Ogre::Vector3(0, 20, 120), Ogre::Quaternion::IDENTITY)->attachObject(camera);
-    camera->lookAt(Ogre::Vector3(0, 0, 0));
+    ship = new Ship(scene, Ogre::Vector3(0, 0, 0), keyboard, camera);
 }
 
 void Level::Launch(Ogre::RenderWindow* window) {

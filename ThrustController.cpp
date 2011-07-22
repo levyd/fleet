@@ -1,35 +1,47 @@
 #include "ThrustController.h"
 
 namespace Controller {
-    Thrust::Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll)
+    Thrust::Thrust()
         : Controller(),
           thrust(0, 0, 0),
           torqueX(0), torqueY(0), torqueZ(0),
-          thrustForward(fwd),
-          thrustReverse(rev),
-          thrustLateral(lat),
-          torqueYaw(yaw),
-          torquePitch(pitch),
-          torqueRoll(roll) {
+          thrustForward(0),
+          thrustReverse(0),
+          thrustLateral(0),
+          torqueYaw(0),
+          torquePitch(0),
+          torqueRoll(0) {
     }
-    //--------------------------------------------------------------------------
+
     Thrust::~Thrust() {
     }
+
+    void Thrust::SetMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, \
+        Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll) {
+        thrustForward = fwd;
+        thrustReverse = rev;
+        thrustLateral = lat;
+        torqueYaw = yaw;
+        torquePitch = pitch;
+        torqueRoll = roll;
+    }
     //--------------------------------------------------------------------------
-    ThrustPlayer::ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, \
-        Ogre::Radian pitch, Ogre::Radian roll, OIS::Keyboard* kb)
-        : Thrust(fwd, rev, lat, yaw, pitch, roll), keyboard(kb) {
+    ThrustPlayer::ThrustPlayer(Ogre::SceneNode*& bodyNode, Ogre::Vector3 offset, \
+            OIS::Keyboard*& kb, Ogre::Camera*& camera) : keyboard(kb) {
+        bodyNode->createChildSceneNode(offset, Ogre::Quaternion::IDENTITY)->attachObject(camera);
+        camera->lookAt(bodyNode->getPosition());
+
         keyboard->setEventCallback(this);
     }
-    //--------------------------------------------------------------------------
+
     ThrustPlayer::~ThrustPlayer() {
     }
-    //--------------------------------------------------------------------------
+
     bool ThrustPlayer::Update(Ogre::Real deltaTime) {
         keyboard->capture();
         return true;
     }
-    //--------------------------------------------------------------------------
+
     bool ThrustPlayer::keyPressed(const OIS::KeyEvent& event) {
         switch(event.key) {
         case OIS::KC_W:
@@ -74,11 +86,11 @@ namespace Controller {
         	torqueZ = 0;
         	break;
         default:
-            return false;
+            break;
         }
         return true;
     }
-    //--------------------------------------------------------------------------
+
     bool ThrustPlayer::keyReleased(const OIS::KeyEvent& event) {
         switch(event.key) {
         case OIS::KC_W:
@@ -117,13 +129,12 @@ namespace Controller {
         	torqueZ = torqueZ - torqueRoll;
         	break;
         default:
-          return false;
+            break;
         }
         return true;
     }
-
-    ThrustAI::ThrustAI(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, \
-    		Ogre::Radian pitch, Ogre::Radian roll) : Thrust(fwd, rev, lat, yaw, pitch, roll) {
+    //--------------------------------------------------------------------------
+    ThrustAI::ThrustAI() : Thrust() {
     	timer = 5;
     }
 

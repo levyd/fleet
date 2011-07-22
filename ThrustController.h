@@ -1,6 +1,8 @@
 #ifndef _THRUST_CONTROLLER_H
 #define _THRUST_CONTROLLER_H
 
+#include <OgreCamera.h>
+#include <OgreSceneNode.h>
 #include <OgreVector3.h>
 
 #include <OISInputManager.h>
@@ -12,9 +14,11 @@
 namespace Controller {
     class Thrust : public Controller {
     public:
-        Thrust(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll);
+        Thrust();
         virtual ~Thrust();
 
+        void SetMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, \
+                Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll);
         virtual bool Update(Ogre::Real deltaTime) = 0;
 
         // Controller vectors use LOCAL coordinates
@@ -28,8 +32,8 @@ namespace Controller {
 
     class ThrustPlayer : public Thrust, public OIS::KeyListener {
     public:
-        ThrustPlayer(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, \
-        		Ogre::Radian pitch, Ogre::Radian roll, OIS::Keyboard* kb);
+        ThrustPlayer(Ogre::SceneNode*& bodyNode, Ogre::Vector3 offset, \
+                OIS::Keyboard*& kb, Ogre::Camera*& camera);
         virtual ~ThrustPlayer();
 
         virtual bool Update(Ogre::Real deltaTime);
@@ -42,7 +46,7 @@ namespace Controller {
 
     class ThrustAI : public Thrust {
     public:
-    	ThrustAI(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll);
+    	ThrustAI();
     	virtual ~ThrustAI();
 
     	virtual bool Update(Ogre::Real deltaTime);
