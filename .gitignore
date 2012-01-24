@@ -1,3 +1,12 @@
+# CMake
+CMakeFiles/*
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Build targets & artifacts
+bin/fleet
+
+# Ogre system
 Ogre.log
-.settings
-Debug
+

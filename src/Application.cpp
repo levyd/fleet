@@ -27,7 +27,7 @@ bool Application::Initialise(void) {
     input = OIS::InputManager::createInputSystem(windowHandle);
     keyboard = static_cast<OIS::Keyboard*>(input->createInputObject(OIS::OISKeyboard, true));
 
-    LoadResources("Resources.cfg");
+    LoadResources("resources.cfg");
 
     level.Initialise("Level-1", keyboard);
 

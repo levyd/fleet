@@ -21,7 +21,7 @@ namespace Controller {
         torquePitch = pitch;
         torqueRoll = roll;
     }
-    void SetTorque() {
+    void Thrust::SetTorque() {
         torque = Ogre::Quaternion(torqueX, Ogre::Vector3::UNIT_X)
                * Ogre::Quaternion(torqueY, Ogre::Vector3::UNIT_Y)
                * Ogre::Quaternion(torqueZ, Ogre::Vector3::UNIT_Z);
