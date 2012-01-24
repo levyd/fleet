@@ -87,6 +87,11 @@ target_link_libraries(fleet ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
  
+add_custom_command(TARGET fleet POST_BUILD COMMAND ctags -R
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src
+    COMMENT "Generating ctags" VERBATIM
+)
+
 # post-build copy for win32
 if(WIN32 AND NOT MINGW)
     add_custom_command( TARGET fleet PRE_BUILD
