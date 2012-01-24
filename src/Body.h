@@ -8,9 +8,14 @@ public:
 	Body(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position);
     virtual ~Body();
       
+    void AttachCamera(Ogre::Camera*& camera, Ogre::Vector3 offset);
+
     virtual bool Update(Ogre::Real deltaTime);
-    const Ogre::Vector3 GetPosition() { return this->bodyNode->getPosition(); }
-    Ogre::SceneNode* GetSceneNode() { return this->bodyNode; }
+
+    Ogre::SceneNode* getSceneNode() { return this->bodyNode; }
+    const Ogre::Vector3 getPosition() { return this->bodyNode->getPosition(); }
+    const Ogre::Vector3 getVelocity() { return this->velocity; }
+    const Ogre::Quaternion getAngular() { return this->angular; }
 
 protected:
     Ogre::SceneManager* scene;

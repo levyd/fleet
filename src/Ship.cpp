@@ -14,11 +14,15 @@ Ship::Ship(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position, OIS::Keyboard* 
     entity->setMaterialName("Steel");
     bodyNode->attachObject(entity);
 
-    thrustController = new Controller::ThrustAI();//bodyNode, Ogre::Vector3(0, 20, 120), kb, camera);
-    thrustController->SetMovementSpeeds(Ogre::Real(100), Ogre::Real(50), \
-        Ogre::Real(10), Ogre::Radian(100), Ogre::Radian(100), Ogre::Radian(100));
+    AttachCamera(camera, Ogre::Vector3(0, 20, 120));
 
-    turretController = new Controller::TurretPlayer(bodyNode, Ogre::Vector3(15, 0, 0), \
+    thrustController = new Controller::ThrustPlayer(this, kb);
+    thrustController->setMovementSpeeds(Ogre::Real(100), Ogre::Real(50), \
+            Ogre::Real(10));
+    thrustController->setRotationSpeeds(Ogre::Radian(100), Ogre::Radian(100), \
+            Ogre::Radian(100));
+
+    //turretController = new Controller::TurretPlayer(bodyNode, Ogre::Vector3(15, 0, 0), \
         Ogre::Quaternion(Ogre::Radian(Ogre::Degree(-90)), Ogre::Vector3::UNIT_Y), kb, camera);
 
 }
@@ -33,7 +37,7 @@ bool Ship::Update(Ogre::Real deltaTime) {
     angular = angular * Ogre::Quaternion::Slerp(deltaTime, \
         Ogre::Quaternion::IDENTITY, thrustController->torque, true);
 
-    turretController->Update(deltaTime);
+    //turretController->Update(deltaTime);
 
     return Body::Update(deltaTime);
 }

@@ -1,8 +1,8 @@
 #include "ThrustController.h"
 
 namespace Controller {
-    Thrust::Thrust()
-        : Controller(),
+    Thrust::Thrust(Body* body)
+        : Controller(), body(body),
           thrust(0, 0, 0), torque(Ogre::Quaternion::IDENTITY),
           thrustForward(0), thrustReverse(0), thrustLateral(0),
           torqueYaw(0), torquePitch(0), torqueRoll(0),
@@ -12,26 +12,26 @@ namespace Controller {
     Thrust::~Thrust() {
     }
 
-    void Thrust::SetMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat, \
-        Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll) {
+    void Thrust::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat) {
         thrustForward = fwd;
         thrustReverse = rev;
         thrustLateral = lat;
+    }
+
+    void Thrust::setRotationSpeeds(Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll) {
         torqueYaw = yaw;
         torquePitch = pitch;
         torqueRoll = roll;
     }
-    void Thrust::SetTorque() {
+
+    void Thrust::setTorque() {
         torque = Ogre::Quaternion(torqueX, Ogre::Vector3::UNIT_X)
                * Ogre::Quaternion(torqueY, Ogre::Vector3::UNIT_Y)
                * Ogre::Quaternion(torqueZ, Ogre::Vector3::UNIT_Z);
     }
     //--------------------------------------------------------------------------
-    ThrustPlayer::ThrustPlayer(Ogre::SceneNode*& bodyNode, Ogre::Vector3 offset, \
-            OIS::Keyboard*& kb, Ogre::Camera*& camera) : keyboard(kb) {
-        bodyNode->createChildSceneNode(offset, Ogre::Quaternion::IDENTITY)->attachObject(camera);
-        camera->lookAt(bodyNode->getPosition());
-
+    ThrustPlayer::ThrustPlayer(Body* body, OIS::Keyboard*& kb) \
+        : Thrust(body), keyboard(kb) {
         keyboard->setEventCallback(this);
     }
 
@@ -133,11 +133,11 @@ namespace Controller {
         default:
             break;
         }
-        SetTorque();
+        setTorque();
         return true;
     }
     //--------------------------------------------------------------------------
-    ThrustAI::ThrustAI() : Thrust() {
+    ThrustAI::ThrustAI(Body* body) : Thrust(body) {
     	timer = 5;
     }
 
