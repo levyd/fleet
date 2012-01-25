@@ -9,7 +9,7 @@ namespace Controller {
         Controller();
         virtual ~Controller();
 
-        virtual bool Update(Ogre::Real deltaTime) = 0;
+        virtual bool update(Ogre::Real deltaTime) = 0;
 
     };
 }

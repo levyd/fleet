@@ -1,21 +1,22 @@
 #ifndef _SHIP_H_
 #define _SHIP_H_
 
-#include <OgreCamera.h>
-#include <OgreSceneNode.h>
+#include <OgreSceneManager.h>
 #include <OISKeyboard.h>
+#include <string.h>
 
-#include "Body.h"
+#include "Entity.h"
 #include "ThrustController.h"
 #include "TurretController.h"
 
-class Ship : public Body {
+class Ship : public Entity {
 public:
-    Ship(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position);
-    Ship(Ogre::SceneManager* sceneMgr, Ogre::Vector3 position, OIS::Keyboard* kb, Ogre::Camera* camera);
+    Ship(Ogre::SceneManager* sceneMgr, std::string name, std::string mesh);
     virtual ~Ship();
 
-    virtual bool Update(Ogre::Real deltaTime);
+    virtual bool update(Ogre::Real deltaTime);
+
+    void controlThrust(OIS::Keyboard* kb);
 
 protected:
     Controller::Thrust* thrustController;

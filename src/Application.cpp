@@ -46,7 +46,7 @@ bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
         return false;
     }
     if(window->isClosed()) { return false; }
-    if(!level.Update(event.timeSinceLastFrame)) { return false; }
+    if(!level.update(event.timeSinceLastFrame)) { return false; }
     return true;
 }
 //------------------------------------------------------------------------------

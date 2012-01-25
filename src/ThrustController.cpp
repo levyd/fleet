@@ -1,7 +1,7 @@
 #include "ThrustController.h"
 
 namespace Controller {
-    Thrust::Thrust(Body* body)
+    Thrust::Thrust(Entity* body)
         : Controller(), body(body),
           thrust(0, 0, 0), torque(Ogre::Quaternion::IDENTITY),
           thrustForward(0), thrustReverse(0), thrustLateral(0),
@@ -30,7 +30,7 @@ namespace Controller {
                * Ogre::Quaternion(torqueZ, Ogre::Vector3::UNIT_Z);
     }
     //--------------------------------------------------------------------------
-    ThrustPlayer::ThrustPlayer(Body* body, OIS::Keyboard*& kb) \
+    ThrustPlayer::ThrustPlayer(Entity* body, OIS::Keyboard*& kb) \
         : Thrust(body), keyboard(kb) {
         keyboard->setEventCallback(this);
     }
@@ -38,7 +38,7 @@ namespace Controller {
     ThrustPlayer::~ThrustPlayer() {
     }
 
-    bool ThrustPlayer::Update(Ogre::Real deltaTime) {
+    bool ThrustPlayer::update(Ogre::Real deltaTime) {
         keyboard->capture();
         return true;
     }
@@ -89,7 +89,7 @@ namespace Controller {
         default:
             break;
         }
-        SetTorque();
+        setTorque();
         return true;
     }
 
@@ -137,14 +137,14 @@ namespace Controller {
         return true;
     }
     //--------------------------------------------------------------------------
-    ThrustAI::ThrustAI(Body* body) : Thrust(body) {
+    ThrustAI::ThrustAI(Entity* body) : Thrust(body) {
     	timer = 5;
     }
 
     ThrustAI::~ThrustAI() {
     }
 
-    bool ThrustAI::Update(Ogre::Real deltaTime) {
+    bool ThrustAI::update(Ogre::Real deltaTime) {
     	if(timer > 0) {
     	    timer -= deltaTime;
     	    thrust.x = 100;

@@ -1,5 +1,4 @@
 #include <OgreRoot.h>
-#include <OgreEntity.h>
 #include <OgreViewport.h>
 
 #include "Level.h"
@@ -36,14 +35,17 @@ void Level::BuildScene() {
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
     Ogre::SceneNode* planet = scene->getRootSceneNode()->createChildSceneNode("Planet", Ogre::Vector3(200, 0, 0), Ogre::Quaternion::IDENTITY);
-	planet->attachObject(scene->createEntity("Planet", Ogre::SceneManager::PT_SPHERE));
+	planet->attachObject((Ogre::MovableObject*)scene->createEntity("Planet", Ogre::SceneManager::PT_SPHERE));
 
     Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
 	light->attachObject(scene->createLight("Light"));
 
     camera = scene->createCamera("Camera");
     camera->setNearClipDistance(5);
-    ship = new Ship(scene, Ogre::Vector3(0, 0, 0), keyboard, camera);
+
+    ship = new Ship(scene, "Ship/Cruiser", "Cruiser.mesh");
+    ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
+    ship->controlThrust(keyboard);
 }
 
 void Level::Launch(Ogre::RenderWindow* window) {
@@ -53,6 +55,6 @@ void Level::Launch(Ogre::RenderWindow* window) {
     camera->setAspectRatio(Ogre::Real(viewport->getActualWidth()) / Ogre::Real(viewport->getActualHeight()));
 }
 
-bool Level::Update(Ogre::Real deltaTime) {
-    return ship->Update(deltaTime);
+bool Level::update(Ogre::Real deltaTime) {
+    return ship->update(deltaTime);
 }

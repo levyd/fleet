@@ -4,8 +4,8 @@
 #include <OgreCamera.h>
 #include <OgreRenderWindow.h>
 #include <OgreSceneManager.h>
-
 #include <OISKeyboard.h>
+#include <string.h>
 
 #include "Ship.h"
 
@@ -15,7 +15,7 @@ public:
     ~Level();
     void Initialise(const std::string& name, OIS::Keyboard* kb);
     void Launch(Ogre::RenderWindow* window);
-    bool Update(Ogre::Real deltaTime);
+    bool update(Ogre::Real deltaTime);
 
 protected:
     void LoadResources();

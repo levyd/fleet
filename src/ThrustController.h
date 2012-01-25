@@ -7,21 +7,19 @@
 #include <OISEvents.h>
 #include <OISKeyboard.h>
 
-#include "Body.h"
+#include "Entity.h"
 #include "Controller.h"
 
 namespace Controller {
     class Thrust : public Controller {
     public:
-        Thrust(Body* body);
+        Thrust(Entity* body);
         virtual ~Thrust();
-
-        virtual bool Update(Ogre::Real deltaTime) = 0;
 
         void setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat);
         void setRotationSpeeds(Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll);
 
-        Body* body;
+        Entity* body;
 
         // Controller vectors use LOCAL coordinates
         Ogre::Vector3 thrust;
@@ -37,10 +35,10 @@ namespace Controller {
 
     class ThrustPlayer : public Thrust, public OIS::KeyListener {
     public:
-        ThrustPlayer(Body* body, OIS::Keyboard*& kb);
+        ThrustPlayer(Entity* body, OIS::Keyboard*& kb);
         virtual ~ThrustPlayer();
 
-        virtual bool Update(Ogre::Real deltaTime);
+        virtual bool update(Ogre::Real deltaTime);
 
     protected:
         OIS::Keyboard* keyboard;
@@ -50,10 +48,10 @@ namespace Controller {
 
     class ThrustAI : public Thrust {
     public:
-    	ThrustAI(Body* body);
+    	ThrustAI(Entity* body);
     	virtual ~ThrustAI();
 
-    	virtual bool Update(Ogre::Real deltaTime);
+    	virtual bool update(Ogre::Real deltaTime);
     private:
     	int timer;
     };
