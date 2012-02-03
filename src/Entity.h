@@ -3,14 +3,16 @@
 
 #include <OgreCamera.h>
 #include <OgreSceneManager.h>
+#include <OgreBulletDynamicsRigidBody.h>
 #include <string.h>
 
 class Entity {
 public:
-	Entity(Ogre::SceneManager* sceneMgr, std::string& name, std::string& mesh);
+    Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world,
+            std::string& name, std::string& mesh);
     virtual ~Entity();
       
-    void attachCamera(Ogre::Camera*& camera, Ogre::Vector3 offset);
+    void attachCamera(Ogre::Camera* camera, Ogre::Vector3 offset);
 
     virtual bool update(Ogre::Real deltaTime);
 
@@ -32,6 +34,9 @@ public:
 protected:
     Ogre::SceneManager* scene;
     Ogre::SceneNode* node;
+    Ogre::Entity* entity;
+
+    OgreBulletDynamics::RigidBody* body;
     Ogre::Vector3 velocity;
     Ogre::Quaternion angular;
 

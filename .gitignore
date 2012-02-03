@@ -1,3 +1,5 @@
+*.swp
+
 # CMake
 CMakeFiles/*
 CMakeCache.txt

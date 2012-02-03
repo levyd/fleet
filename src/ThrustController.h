@@ -7,8 +7,8 @@
 #include <OISEvents.h>
 #include <OISKeyboard.h>
 
-#include "Entity.h"
 #include "Controller.h"
+#include "Entity.h"
 
 namespace Controller {
     class Thrust : public Controller {

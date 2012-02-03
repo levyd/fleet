@@ -3,6 +3,7 @@ set(HDRS
     src/Controller.h
     src/Entity.h
     src/Level.h
+    src/Pilotable.h
     src/Ship.h
     src/ThrustController.h
     src/TurretController.h
@@ -14,6 +15,7 @@ set(SRCS
     src/Entity.cpp
     src/Level.cpp
     src/Main.cpp
+    src/Pilotable.cpp
     src/Ship.cpp
     src/ThrustController.cpp
     src/TurretController.cpp

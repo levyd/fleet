@@ -3,20 +3,24 @@
 
 #include "Level.h"
 
-Level::Level() : scene(0), camera(0) {
+Level::Level() : scene(0), camera(0), keyboard(0), world(0) {
 }
 
 Level::~Level() {
 	if(ship != NULL) { delete ship; }
     if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
+    if(world != NULL) { delete world; }
     this->UnloadResources();
 }
 
 void Level::Initialise(const std::string& levelName, OIS::Keyboard* kb) {
     this->name = levelName;
-    scene = Ogre::Root::getSingleton().createSceneManager(Ogre::ST_GENERIC, levelName);
-
     keyboard = kb;
+
+    scene = Ogre::Root::getSingleton().createSceneManager(Ogre::ST_GENERIC, levelName);
+    Ogre::AxisAlignedBox bounds = Ogre::AxisAlignedBox(
+            Ogre::Vector3(-10000, -10000, -10000), Ogre::Vector3(-10000, -10000, -10000));
+    world = new OgreBulletDynamics::DynamicsWorld(scene, bounds, Ogre::Vector3(0, 0, 0));
 
     //this->LoadResources();
     this->BuildScene();
@@ -43,7 +47,7 @@ void Level::BuildScene() {
     camera = scene->createCamera("Camera");
     camera->setNearClipDistance(5);
 
-    ship = new Ship(scene, "Ship/Cruiser", "Cruiser.mesh");
+    ship = new Ship(scene, world, "Ship/Cruiser", "Cruiser.mesh");
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
     ship->controlThrust(keyboard);
 }
@@ -56,5 +60,6 @@ void Level::Launch(Ogre::RenderWindow* window) {
 }
 
 bool Level::update(Ogre::Real deltaTime) {
+    world->stepSimulation(deltaTime);
     return ship->update(deltaTime);
 }

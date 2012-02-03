@@ -4,7 +4,11 @@
 #include <OgreCamera.h>
 #include <OgreRenderWindow.h>
 #include <OgreSceneManager.h>
+
 #include <OISKeyboard.h>
+
+#include <OgreBulletDynamicsWorld.h>
+
 #include <string.h>
 
 #include "Ship.h"
@@ -25,6 +29,7 @@ protected:
     Ogre::SceneManager* scene;
     Ogre::Camera* camera;
     OIS::Keyboard* keyboard;
+    OgreBulletDynamics::DynamicsWorld* world;
     std::string name;
 
     Ship* ship;

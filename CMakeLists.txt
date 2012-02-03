@@ -24,6 +24,8 @@ if(UNIX)
       message(SEND_ERROR "Failed to find module path.")
     endif(EXISTS "/usr/local/lib/OGRE/cmake")
 endif(UNIX)
+
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;${CMAKE_MODULE_PATH}")
  
 set(CMAKE_DEBUG_POSTFIX "_d")
  
@@ -36,7 +38,11 @@ find_package(OGRE REQUIRED)
 #endif()
  
 find_package(OIS REQUIRED)
+
+find_package(BULLET REQUIRED)
  
+find_package(OGREBULLET REQUIRED)
+
 if(NOT OIS_FOUND)
     message(SEND_ERROR "Failed to find OIS.")
 endif()
@@ -76,6 +82,8 @@ include(SourceFiles.cmake)
 
 include_directories( ${OIS_INCLUDE_DIRS}
     ${OGRE_INCLUDE_DIRS}
+    ${BULLET_INCLUDE_DIRS}
+    ${OGREBULLET_INCLUDE_DIRS}
     ${OGRE_SAMPLES_INCLUDEPATH}
 )
  
@@ -83,7 +91,7 @@ add_executable(fleet WIN32 ${HDRS} ${SRCS})
  
 set_target_properties(fleet PROPERTIES DEBUG_POSTFIX _d)
  
-target_link_libraries(fleet ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
+target_link_libraries(fleet ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${BULLET_LIBRARIES} ${OGREBULLET_LIBRARIES})
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
  
