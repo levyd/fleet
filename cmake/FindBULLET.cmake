@@ -10,7 +10,6 @@
 include(FindPkgMacros)
 include(PreprocessorUtils)
 findpkg_begin(BULLET)
-set(BULLET_FIND_REQUIRED 1)
 
 # Get path, convert backslashes as ${ENV_${var}}
 getenv_path(BULLET_HOME)
@@ -38,12 +37,10 @@ if (WIN32)
   )
 elseif (UNIX)
   set(BULLET_PREFIX_GUESSES
-    /opt/bullet
-    /opt/BULLET
+    /opt
     /usr
     /usr/local
-    $ENV{HOME}/bullet
-    $ENV{HOME}/BULLET
+    $ENV{HOME}
   )
 endif ()
 
@@ -53,7 +50,6 @@ set(BULLET_PREFIX_PATH
 )
 
 create_search_paths(BULLET)
-
 
 set(BULLET_RESET_VARS 
   BULLET_INCLUDE_DIR 
@@ -66,7 +62,7 @@ clear_if_changed(BULLET_PREFIX_WATCH ${BULLET_RESET_VARS})
 use_pkgconfig(BULLET_PKGC "bullet")
 
 # locate BULLET include files
-find_path(BULLET_INCLUDE_DIR NAMES btBulletDynamicsCommon.h HINTS ${BULLET_INC_SEARCH_PATH} ${BULLET_FRAMEWORK_INCLUDES} ${BULLET_PKGC_INCLUDE_DIRS})
+find_path(BULLET_INCLUDE_DIR NAMES btBulletDynamicsCommon.h HINTS ${BULLET_INC_SEARCH_PATH} ${BULLET_FRAMEWORK_INCLUDES} ${BULLET_PKGC_INCLUDE_DIRS} PATH_SUFFIXES BULLET bullet)
 
 if (BULLET_INCLUDE_DIR)
   # determine BULLET version

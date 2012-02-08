@@ -7,7 +7,7 @@ cmake_install.cmake
 Makefile
 
 # Build targets & artifacts
-bin/fleet
+bin/
 tags
 
 # Ogre system
