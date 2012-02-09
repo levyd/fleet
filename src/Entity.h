@@ -6,12 +6,19 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <string.h>
 
+/**
+ * Base class for all objects that have a physical representation in the world.
+ *
+ * Objects deriving this class must provide a mesh. The mesh is used by OGRE as
+ * the object's visual representation, and is passed to Bullet, to use as the
+ * object's collidable representation.
+ */
 class Entity {
 public:
     Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world,
             std::string& name, std::string& mesh);
     virtual ~Entity();
-      
+
     void attachCamera(Ogre::Camera* camera, Ogre::Vector3 offset);
 
     virtual bool update(Ogre::Real deltaTime);

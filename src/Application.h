@@ -12,20 +12,19 @@ public:
     Application(void);
     ~Application(void);
 
-    bool Initialise(void);
-    void Launch(void);
+    bool initialise(void);
+    void launch(void);
 
 protected:
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& event);
     virtual void windowClosed(Ogre::RenderWindow* rw);
 
 private:
-    void LoadResources(const std::string& resourcesCfg);
+    void loadResources(const std::string& resourcesCfg);
 
     Ogre::Root* root;
     Ogre::RenderWindow* window;
-    OIS::InputManager* input;
-    OIS::Keyboard* keyboard;
+    OIS::InputManager* inputManager;
 
     Level level;
 };

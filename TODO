@@ -1,0 +1,23 @@
+* Starfield
+    Write an environment-type class that will generate a starfield.
+
+* Roles
+    Pilot
+    Gunner
+    Commander?
+
+* Input System
+    Unified keyboard, joystick, mouse (In progress - levyd)
+    Mappings to/from file
+
+* Damage System
+    Kinetic/Explosive
+    EMR
+    Heat
+    Radiation - kills crew after battle!
+    http://history.nasa.gov/conghand/nuclear.htm
+
+* Weapons
+    Missiles
+    Turret
+

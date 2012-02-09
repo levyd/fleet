@@ -4,19 +4,16 @@
 #include <OgreSceneManager.h>
 #include <string.h>
 
+#include "Entity.h"
 #include "Pilotable.h"
-#include "TurretController.h"
 
-class Ship : public Pilotable {
+class Ship : public Entity, public Pilotable {
 public:
     Ship(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world,
             std::string name, std::string mesh);
     virtual ~Ship();
 
     virtual bool update(Ogre::Real deltaTime);
-
-protected:
-    Controller::Turret* turretController;
 };
 
 #endif

@@ -3,38 +3,42 @@
 
 #include "Level.h"
 
-Level::Level() : scene(0), camera(0), keyboard(0), world(0) {
+Level::Level() : scene(0), camera(0), world(0), player(0) {
 }
 
 Level::~Level() {
 	if(ship != NULL) { delete ship; }
     if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
     if(world != NULL) { delete world; }
-    this->UnloadResources();
+    if(player != NULL) { delete player; }
+    this->unloadResources();
 }
 
-void Level::Initialise(const std::string& levelName, OIS::Keyboard* kb) {
+void Level::initialise(const std::string& levelName, OIS::InputManager* inputManager) {
     this->name = levelName;
-    keyboard = kb;
 
     scene = Ogre::Root::getSingleton().createSceneManager(Ogre::ST_GENERIC, levelName);
     Ogre::AxisAlignedBox bounds = Ogre::AxisAlignedBox(
             Ogre::Vector3(-10000, -10000, -10000), Ogre::Vector3(-10000, -10000, -10000));
     world = new OgreBulletDynamics::DynamicsWorld(scene, bounds, Ogre::Vector3(0, 0, 0));
 
-    //this->LoadResources();
-    this->BuildScene();
+    player = new ControllerPlayer(inputManager);
+    //TODO!
+    //player.setKeymap();
+
+    //this->loadResources();
+    this->buildScene();
 }
 
-void Level::LoadResources() {
+void Level::loadResources() {
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(this->name);
 }
 
-void Level::UnloadResources() {
+void Level::unloadResources() {
     Ogre::ResourceGroupManager::getSingleton().destroyResourceGroup(this->name);
 }
 
-void Level::BuildScene() {
+void Level::buildScene() {
 	scene->setSkyBox(true, "Sky/Stars");
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
@@ -49,17 +53,20 @@ void Level::BuildScene() {
 
     ship = new Ship(scene, world, "Ship/Cruiser", "Cruiser.mesh");
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
-    ship->controlThrust(keyboard);
+    ship->setMovementSpeeds(Ogre::Real(100), Ogre::Real(50), Ogre::Real(10));
+    ship->setRotationSpeeds(Ogre::Radian(100), Ogre::Radian(100), Ogre::Radian(100));
 }
 
-void Level::Launch(Ogre::RenderWindow* window) {
+void Level::launch(Ogre::RenderWindow* window) {
     window->removeAllViewports();
     Ogre::Viewport* viewport = window->addViewport(camera, 0, 0, 0, 1, 1);
     viewport->setBackgroundColour(Ogre::ColourValue(0, 0, 0));
     camera->setAspectRatio(Ogre::Real(viewport->getActualWidth()) / Ogre::Real(viewport->getActualHeight()));
+    player->control(ship);
 }
 
 bool Level::update(Ogre::Real deltaTime) {
     world->stepSimulation(deltaTime);
+    player->update(deltaTime);
     return ship->update(deltaTime);
 }

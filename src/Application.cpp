@@ -3,18 +3,17 @@
 #include "Application.h"
 #include "Controller.h"
 
-//------------------------------------------------------------------------------
-Application::Application(void) : root(0), window(0), input(0), keyboard(0) {
+Application::Application(void) : root(0), window(0), inputManager(0) {
 }
-//------------------------------------------------------------------------------
+
 Application::~Application(void) {
 
     Ogre::WindowEventUtilities::removeWindowEventListener(window, this);
     windowClosed(window);
     delete root;
 }
-//------------------------------------------------------------------------------
-bool Application::Initialise(void) {
+
+bool Application::initialise(void) {
     size_t windowHandle = 0;
 
     root = new Ogre::Root("plugins.cfg");
@@ -24,42 +23,36 @@ bool Application::Initialise(void) {
     Ogre::WindowEventUtilities::addWindowEventListener(window, this);
 
     window->getCustomAttribute("WINDOW", &windowHandle);
-    input = OIS::InputManager::createInputSystem(windowHandle);
-    keyboard = static_cast<OIS::Keyboard*>(input->createInputObject(OIS::OISKeyboard, true));
+    inputManager = OIS::InputManager::createInputSystem(windowHandle);
 
-    LoadResources("resources.cfg");
+    this->loadResources("resources.cfg");
 
-    level.Initialise("Level-1", keyboard);
+    level.initialise("Level-1", inputManager);
 
     root->addFrameListener(this);
     return true;
 }
-//------------------------------------------------------------------------------
-void Application::Launch(void) {
-    level.Launch(window);
+
+void Application::launch(void) {
+    level.launch(window);
     root->startRendering();
 }
-//------------------------------------------------------------------------------
+
 bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
-    if(keyboard->isKeyDown(OIS::KC_ESCAPE)) {
-        windowClosed(window);
-        return false;
-    }
     if(window->isClosed()) { return false; }
     if(!level.update(event.timeSinceLastFrame)) { return false; }
     return true;
 }
-//------------------------------------------------------------------------------
+
 void Application::windowClosed(Ogre::RenderWindow* rw) {
     if(rw != window) { return; }
-    if(input != NULL) {
-        if(keyboard != NULL) { input->destroyInputObject(keyboard); }
-        OIS::InputManager::destroyInputSystem(input);
-        input = 0;
+    if(inputManager != NULL) {
+        OIS::InputManager::destroyInputSystem(inputManager);
+        inputManager = 0;
     }
 }
-//------------------------------------------------------------------------------
-void Application::LoadResources(const std::string& resourcesCfg) {
+
+void Application::loadResources(const std::string& resourcesCfg) {
     Ogre::ConfigFile config;
     Ogre::String secName, typeName, archName;
 

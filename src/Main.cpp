@@ -18,8 +18,8 @@ extern "C" {
         Application app;
 
         try {
-            app.Initialise();
-            app.Launch();
+            app.initialise();
+            app.launch();
         } catch( Ogre::Exception& e ) {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
             MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occurred!", MB_OK | MB_ICONERROR | MB_TASKMODAL);

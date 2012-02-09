@@ -5,33 +5,34 @@
 #include <OgreRenderWindow.h>
 #include <OgreSceneManager.h>
 
-#include <OISKeyboard.h>
+#include <OISInputManager.h>
 
 #include <OgreBulletDynamicsWorld.h>
 
 #include <string.h>
 
+#include "ControllerPlayer.h"
 #include "Ship.h"
 
 class Level {
 public:
     Level();
     ~Level();
-    void Initialise(const std::string& name, OIS::Keyboard* kb);
-    void Launch(Ogre::RenderWindow* window);
+    void initialise(const std::string& name, OIS::InputManager* kb);
+    void launch(Ogre::RenderWindow* window);
     bool update(Ogre::Real deltaTime);
 
 protected:
-    void LoadResources();
-    void UnloadResources();
-    void BuildScene();
+    void loadResources();
+    void unloadResources();
+    void buildScene();
 
+    std::string name;
     Ogre::SceneManager* scene;
     Ogre::Camera* camera;
-    OIS::Keyboard* keyboard;
     OgreBulletDynamics::DynamicsWorld* world;
-    std::string name;
 
+    ControllerPlayer* player;
     Ship* ship;
 };
 #endif

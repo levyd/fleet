@@ -3,14 +3,18 @@
 
 #include <OgrePrerequisites.h>
 
-namespace Controller {
-    class Controller {
-    public:
-        Controller();
-        virtual ~Controller();
+#include "Entity.h"
 
-        virtual bool update(Ogre::Real deltaTime) = 0;
+class Controller {
+public:
+    Controller();
+    virtual ~Controller();
 
-    };
-}
+    void control(Entity* entity);
+    virtual bool update(Ogre::Real deltaTime) = 0;
+
+private:
+    Entity* entity;
+
+};
 #endif

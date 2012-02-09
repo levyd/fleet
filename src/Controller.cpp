@@ -1,11 +1,12 @@
 #include "Controller.h"
 
-namespace Controller {
-    Controller::Controller() {
-    }
+Controller::Controller() : entity(0) {
+}
 
-    Controller::~Controller() {
-    }
+Controller::~Controller() {
+}
 
+void Controller::control(Entity* entity) {
+    this->entity = entity;
 }
 

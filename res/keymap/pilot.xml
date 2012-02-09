@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<keymap name="pilot">
+    <device type="keyboard">
+        <button value="w">
+            <action value="forward-thrust"/>
+        </button>
+        <button value="a">
+            <action value="left-thrust"/>
+        </button>
+        <button value="s">
+            <action value="reverse-thrust"/>
+        </button>
+        <button value="d">
+            <action value="right-thrust"/>
+        </button>
+        <button value="q">
+            <action value="down-thrust"/>
+        </button>
+        <button value="e">
+            <action value="up-thrust"/>
+        </button>
+    </device>
+    <device type="joystick">
+        <axis value="x">
+            <action value="yaw">
+        </axis>
+    </device>
+</keymap>
