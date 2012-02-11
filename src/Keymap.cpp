@@ -2,7 +2,7 @@
 
 KeyboardMap::KeyboardMap() {
     for(int i = 0; i < NUM_KB_BUTTONS; i++) {
-        buttonActions[i] = NULL;
+        this->buttonActions[i] = &Actionable::actionDefault;
     }
 }
 
@@ -16,10 +16,10 @@ const ButtonAction KeyboardMap::getButtonAction(OIS::KeyCode id) {
 
 MouseMap::MouseMap() {
     for(int i = 0; i < NUM_MS_BUTTONS; i++) {
-        buttonActions[i] = NULL;
+        this->buttonActions[i] = &Actionable::actionDefault;
     }
     for(int i = 0; i < NUM_MS_AXIS; i++) {
-        axisActions[i] = NULL;
+        this->axisActions[i] = &Actionable::actionDefault;
     }
 }
 
@@ -41,10 +41,10 @@ const ButtonAction MouseMap::getButtonAction(OIS::MouseButtonID id) {
 
 JoystickMap::JoystickMap() {
     for(int i = 0; i < NUM_JS_BUTTONS; i++) {
-        this->buttonActions[i] = NULL;
+        this->buttonActions[i] = &Actionable::actionDefault;
     }
     for(int i = 0; i < NUM_JS_AXIS; i++) {
-        this->axisActions[i] = NULL;
+        this->axisActions[i] = &Actionable::actionDefault;
     }
 }
 void JoystickMap::setAxisAction(enum JoystickAxis id, AxisAction action) {

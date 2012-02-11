@@ -32,7 +32,7 @@ protected:
     Ogre::Camera* camera;
     OgreBulletDynamics::DynamicsWorld* world;
 
-    ControllerPlayer* player;
     Ship* ship;
+    ControllerPlayer* player;
 };
 #endif

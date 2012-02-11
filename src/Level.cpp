@@ -3,14 +3,14 @@
 
 #include "Level.h"
 
-Level::Level() : scene(0), camera(0), world(0), player(0) {
+Level::Level() : scene(0), camera(0), world(0), ship(0), player(0) {
 }
 
 Level::~Level() {
-	if(ship != NULL) { delete ship; }
+    if(player != NULL) { delete player; }
+    if(ship != NULL) { delete ship; }
     if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
     if(world != NULL) { delete world; }
-    if(player != NULL) { delete player; }
     this->unloadResources();
 }
 
@@ -39,14 +39,14 @@ void Level::unloadResources() {
 }
 
 void Level::buildScene() {
-	scene->setSkyBox(true, "Sky/Stars");
+    scene->setSkyBox(true, "Sky/Stars");
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
     Ogre::SceneNode* planet = scene->getRootSceneNode()->createChildSceneNode("Planet", Ogre::Vector3(200, 0, 0), Ogre::Quaternion::IDENTITY);
-	planet->attachObject((Ogre::MovableObject*)scene->createEntity("Planet", Ogre::SceneManager::PT_SPHERE));
+    planet->attachObject((Ogre::MovableObject*)scene->createEntity("Planet", Ogre::SceneManager::PT_SPHERE));
 
     Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
-	light->attachObject(scene->createLight("Light"));
+    light->attachObject(scene->createLight("Light"));
 
     camera = scene->createCamera("Camera");
     camera->setNearClipDistance(5);

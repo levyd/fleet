@@ -12,6 +12,8 @@ public:
     Actionable();
     virtual ~Actionable();
 
+    virtual bool actionDefault(bool isActive) { return false; };
+    virtual bool actionDefault(int position) { return false; };
     virtual bool actionThrustForward(bool isActive) { return false; };
     virtual bool actionThrustReverse(bool isActive) { return false; };
     virtual bool actionThrustLeft(bool isActive) { return false; };

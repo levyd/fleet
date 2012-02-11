@@ -80,6 +80,7 @@ bool Pilotable::actionYawLeft(bool isActive) {
     } else {
         this->torqueY += torqueYaw;
     }
+    this->setTorque();
     return true;
 }
 
@@ -89,6 +90,7 @@ bool Pilotable::actionYawRight(bool isActive) {
     } else {
         this->torqueY -= torqueYaw;
     }
+    this->setTorque();
     return true;
 }
 
@@ -98,6 +100,7 @@ bool Pilotable::actionPitchUp(bool isActive) {
     } else {
         this->torqueX += torquePitch;
     }
+    this->setTorque();
     return true;
 }
 
@@ -107,6 +110,7 @@ bool Pilotable::actionPitchDown(bool isActive) {
     } else {
         this->torqueX -= torquePitch;
     }
+    this->setTorque();
     return true;
 }
 
@@ -116,6 +120,7 @@ bool Pilotable::actionRollLeft(bool isActive) {
     } else {
         this->torqueZ += torqueYaw;
     }
+    this->setTorque();
     return true;
 }
 
@@ -125,6 +130,7 @@ bool Pilotable::actionRollRight(bool isActive) {
     } else {
         this->torqueZ -= torqueYaw;
     }
+    this->setTorque();
     return true;
 }
 
