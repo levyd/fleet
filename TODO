@@ -1,5 +1,9 @@
 * Starfield
-    Write an environment-type class that will generate a starfield.
+    Get Spacescape up and running, generate some backgrounds
+
+* Camera position
+    Add a node between camera and ship
+    Move camera nodes based on ship movement
 
 * Roles
     Pilot
@@ -20,4 +24,14 @@
 * Weapons
     Missiles
     Turret
+
+* Objects
+    Planet
+    Asteroid
+    Fighter
+
+* Textures/Materials
+    Get them on the meshes
+    Earth
+    Asteroid
 

@@ -36,6 +36,7 @@ bool Application::initialise(void) {
 void Application::launch(void) {
     level.launch(window);
     root->startRendering();
+    this->unloadResources();
 }
 
 bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
@@ -75,3 +76,6 @@ void Application::loadResources(const std::string& resourcesCfg) {
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Common");
 }
 
+void Application::unloadResources() {
+    Ogre::ResourceGroupManager::getSingleton().destroyResourceGroup("Common");
+}

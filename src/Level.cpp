@@ -1,17 +1,18 @@
 #include <OgreRoot.h>
 #include <OgreViewport.h>
+#include <Shapes/OgreBulletCollisionsSphereShape.h>
 
 #include "Level.h"
 
-Level::Level() : scene(0), camera(0), world(0), ship(0), player(0) {
+Level::Level() : scene(0), camera(0), world(0), entities(0), player(0),
+    ship(0) {
 }
 
 Level::~Level() {
     if(player != NULL) { delete player; }
-    if(ship != NULL) { delete ship; }
-    if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
+    if(entities != NULL) { delete entities; }
     if(world != NULL) { delete world; }
-    this->unloadResources();
+    if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
 }
 
 void Level::initialise(const std::string& levelName, OIS::InputManager* inputManager) {
@@ -21,6 +22,19 @@ void Level::initialise(const std::string& levelName, OIS::InputManager* inputMan
     Ogre::AxisAlignedBox bounds = Ogre::AxisAlignedBox(
             Ogre::Vector3(-10000, -10000, -10000), Ogre::Vector3(-10000, -10000, -10000));
     world = new OgreBulletDynamics::DynamicsWorld(scene, bounds, Ogre::Vector3(0, 0, 0));
+
+    OgreBulletCollisions::DebugDrawer* debugDrawer;
+    debugDrawer = new OgreBulletCollisions::DebugDrawer();
+    debugDrawer->setDrawWireframe(true);
+    world->setDebugDrawer(debugDrawer);
+    world->setShowDebugShapes(true);
+    Ogre::SceneNode *debugNode =
+        scene->getRootSceneNode()->createChildSceneNode("debugDrawer",
+                Ogre::Vector3::ZERO);
+    debugNode->attachObject(static_cast <Ogre::SimpleRenderable *>
+            (debugDrawer));
+
+    entities = new EntityManager(scene, world);
 
     player = new ControllerPlayer(inputManager);
     //TODO!
@@ -42,8 +56,10 @@ void Level::buildScene() {
     scene->setSkyBox(true, "Sky/Stars");
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
-    Ogre::SceneNode* planet = scene->getRootSceneNode()->createChildSceneNode("Planet", Ogre::Vector3(200, 0, 0), Ogre::Quaternion::IDENTITY);
-    planet->attachObject((Ogre::MovableObject*)scene->createEntity("Planet", Ogre::SceneManager::PT_SPHERE));
+    //EntityProperties planetProperties;
+    //planetProperties.name = "Planet";
+    //planetProperties.position = Ogre::Vector3(200, 0, 0);
+    //entities->createPlanet(planetProperties);
 
     Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
     light->attachObject(scene->createLight("Light"));
@@ -51,10 +67,14 @@ void Level::buildScene() {
     camera = scene->createCamera("Camera");
     camera->setNearClipDistance(5);
 
-    ship = new Ship(scene, world, "Ship/Cruiser", "Cruiser.mesh");
+    EntityProperties shipProperties;
+    shipProperties.name = "Ship/Cruiser";
+    shipProperties.material = "Steel";
+    shipProperties.mesh = "Cruiser.mesh";
+    ship = entities->createShip(shipProperties);
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
     ship->setMovementSpeeds(Ogre::Real(100), Ogre::Real(50), Ogre::Real(10));
-    ship->setRotationSpeeds(Ogre::Radian(100), Ogre::Radian(100), Ogre::Radian(100));
+    ship->setRotationSpeeds(Ogre::Real(100), Ogre::Real(100), Ogre::Real(100));
 }
 
 void Level::launch(Ogre::RenderWindow* window) {
@@ -66,7 +86,7 @@ void Level::launch(Ogre::RenderWindow* window) {
 }
 
 bool Level::update(Ogre::Real deltaTime) {
+    entities->update(deltaTime);
     world->stepSimulation(deltaTime);
-    player->update(deltaTime);
-    return ship->update(deltaTime);
+    return player->update(deltaTime);
 }

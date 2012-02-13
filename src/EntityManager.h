@@ -4,22 +4,29 @@
 #include <OgreSceneManager.h>
 #include <OgreBulletDynamicsWorld.h>
 
-#include <string.h>
+#include <string>
+#include <vector>
+
+#include "Entity.h"
+#include "Ship.h"
 
 class EntityManager {
 public:
-    EntityManager(Ogre::SceneManager* scene);
+    EntityManager(Ogre::SceneManager* scene,
+            OgreBulletDynamics::DynamicsWorld* world);
     virtual ~EntityManager();
 
-    Entity* createEntity(std::string& name, std::string& mesh);
-    bool update(Ogre::Real deltaTime);
+    Entity* createEntity(EntityProperties& properties);
+    Entity* createPlanet(EntityProperties& properties);
+    Ship*   createShip(EntityProperties& properties);
+    bool    update(Ogre::Real deltaTime);
 
 private:
-    Entity* entities[4] = { NULL };
-    int entityIndex = 0;
-
     Ogre::SceneManager* scene;
-}
+    OgreBulletDynamics::DynamicsWorld* world;
+
+    std::vector<Entity*> entities;
+};
 
 #endif
 

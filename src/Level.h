@@ -9,9 +9,10 @@
 
 #include <OgreBulletDynamicsWorld.h>
 
-#include <string.h>
+#include <string>
 
 #include "ControllerPlayer.h"
+#include "EntityManager.h"
 #include "Ship.h"
 
 class Level {
@@ -32,7 +33,8 @@ protected:
     Ogre::Camera* camera;
     OgreBulletDynamics::DynamicsWorld* world;
 
-    Ship* ship;
+    EntityManager* entities;
     ControllerPlayer* player;
+    Ship* ship;
 };
 #endif

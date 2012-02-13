@@ -28,9 +28,9 @@ ControllerPlayer::ControllerPlayer(OIS::InputManager* inputManager) {
 
 ControllerPlayer::~ControllerPlayer() {
     if(map != NULL) { delete map; }
-    inputManager->destroyInputObject(keyboard);
-    inputManager->destroyInputObject(mouse);
-    inputManager->destroyInputObject(joystick);
+    if(keyboard != NULL) { inputManager->destroyInputObject(keyboard); }
+    if(mouse != NULL) { inputManager->destroyInputObject(mouse); }
+    if(joystick != NULL) { inputManager->destroyInputObject(joystick); }
 }
 
 void ControllerPlayer::control(Actionable* actor) {

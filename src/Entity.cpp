@@ -3,23 +3,46 @@
 
 #include "Entity.h"
 
-Entity::Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world,
-        std::string& name, std::string& mesh)
-        : scene(scene), velocity(0, 0, 0), angular(Ogre::Quaternion::IDENTITY) {
+EntityProperties::EntityProperties() : name(""), material(""), mesh(""),
+    position(Ogre::Vector3::ZERO), orientation(Ogre::Quaternion::IDENTITY),
+    restitution(0.6f), friction(0.6f), mass(1.0f) {
+}
 
-    node = scene->getRootSceneNode()->createChildSceneNode();
+/**
+ * Entity constructor.
+ *
+ * If the parameter @a entity has not been specified or is @c null, this constructor
+ * will first build a new Ogre::Entity from the fields in @a properties, and then
+ * use it to create an @c Entity.
+ *
+ * If the parameter @a entity is not null, this constructor will use it instead of
+ * building a new Ogre::Entity.
+ */
+Entity::Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld*
+        world, EntityProperties& properties, Ogre::Entity* entity) :
+    scene(scene), angular(Ogre::Quaternion::IDENTITY) {
 
-    this->entity = scene->createEntity("Ship/Cruiser", "Cruiser.mesh");
-    this->entity->setMaterialName("Steel");
+    if(entity == NULL) {
+        entity = scene->createEntity(properties.name, properties.mesh);
+    }
+
+    node = scene->getRootSceneNode()->createChildSceneNode(properties.name,
+            properties.position, properties.orientation);
+
+    this->entity = entity;
+    if(!properties.material.empty()) {
+        this->entity->setMaterialName(properties.material);
+    }
     node->attachObject(this->entity);
 
     Ogre::Vector3 size = this->entity->getBoundingBox().getSize() * 0.48f;
     OgreBulletCollisions::BoxCollisionShape* shape;
     shape = new OgreBulletCollisions::BoxCollisionShape(size);
 
-    this->body = new OgreBulletDynamics::RigidBody("Ship/Cruiser", world);
-    this->body->setShape(this->node, shape, 0.6f, 0.6f, 1.0f,
-            Ogre::Vector3::ZERO, Ogre::Quaternion::IDENTITY);
+    this->body = new OgreBulletDynamics::RigidBody(properties.name, world);
+    this->body->setShape(this->node, shape, properties.restitution,
+            properties.friction, properties.mass, Ogre::Vector3::ZERO,
+            Ogre::Quaternion::IDENTITY);
 }
 
 Entity::~Entity() {
@@ -28,14 +51,13 @@ Entity::~Entity() {
     if(this->body != NULL) { delete this->body; }
 }
 
+/** Attach a camera to this entity */
 void Entity::attachCamera(Ogre::Camera* camera, Ogre::Vector3 offset) {
     this->node->createChildSceneNode(offset, Ogre::Quaternion::IDENTITY)->attachObject(camera);
     camera->lookAt(node->getPosition());
 }
 
 bool Entity::update(Ogre::Real deltaTime) {
-    this->node->translate(this->velocity * deltaTime);
-    this->node->rotate(Ogre::Quaternion::Slerp(deltaTime, Ogre::Quaternion::IDENTITY, this->angular));
     return true;
 }
 

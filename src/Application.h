@@ -21,6 +21,7 @@ protected:
 
 private:
     void loadResources(const std::string& resourcesCfg);
+    void unloadResources();
 
     Ogre::Root* root;
     Ogre::RenderWindow* window;

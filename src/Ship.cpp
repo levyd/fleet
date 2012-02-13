@@ -2,18 +2,15 @@
 
 #include "Ship.h"
 
-Ship::Ship(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world, std::string name, std::string mesh)
-    : Entity(scene, world, name, mesh) {
+Ship::Ship(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world, EntityProperties properties)
+    : Entity(scene, world, properties), Pilotable(this->Entity::body) {
+    this->Entity::body->applyImpulse(Ogre::Vector3(10000, 0, 0), Ogre::Vector3(0, 0, 0));
 }
 
 Ship::~Ship() {
 }
 
 bool Ship::update(Ogre::Real deltaTime) {
-    velocity += node->getOrientation() * this->thrust * deltaTime;
-    angular = angular * Ogre::Quaternion::Slerp(deltaTime,
-            Ogre::Quaternion::IDENTITY, this->torque, true);
-
     return Entity::update(deltaTime);
 }
 

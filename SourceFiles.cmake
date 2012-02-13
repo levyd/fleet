@@ -6,6 +6,7 @@ set(HDRS
     src/Controller.h
     src/ControllerPlayer.h
     src/Entity.h
+    src/EntityManager.h
     src/Keymap.h
     src/Level.h
     src/Pilotable.h
@@ -18,6 +19,7 @@ set(SRCS
     src/Controller.cpp
     src/ControllerPlayer.cpp
     src/Entity.cpp
+    src/EntityManager.cpp
     src/Keymap.cpp
     src/Level.cpp
     src/Main.cpp

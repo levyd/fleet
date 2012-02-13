@@ -1,141 +1,156 @@
 #include "Pilotable.h"
 
-Pilotable::Pilotable() {
-    thrust = Ogre::Vector3::ZERO;
-    torque = Ogre::Quaternion::IDENTITY;
+#include <LinearMath/btVector3.h>
+#include <BulletDynamics/Dynamics/btRigidBody.h>
+
+Pilotable::Pilotable(OgreBulletDynamics::RigidBody* body) : body(body) {
+    this->setMovementSpeeds(1.0f, 1.0f, 1.0f);
+    this->setRotationSpeeds(1.0f, 1.0f, 1.0f);
 }
 
 Pilotable::~Pilotable() {
 }
 
-void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat) {
-    thrustForward = fwd;
-    thrustReverse = rev;
-    thrustLateral = lat;
+void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev,
+        Ogre::Real lat) {
+    thrustForward = Ogre::Vector3(   0,    0,  fwd);
+    thrustReverse = Ogre::Vector3(   0,    0, -rev);
+    thrustLeft    = Ogre::Vector3(-lat,    0,    0);
+    thrustRight   = Ogre::Vector3( lat,    0,    0);
+    thrustUp      = Ogre::Vector3(   0,  lat,    0);
+    thrustDown    = Ogre::Vector3(   0, -lat,    0);
 }
 
-void Pilotable::setRotationSpeeds(Ogre::Radian yaw, Ogre::Radian pitch, Ogre::Radian roll) {
-    torqueYaw = yaw;
-    torquePitch = pitch;
-    torqueRoll = roll;
+void Pilotable::setRotationSpeeds(Ogre::Real yaw, Ogre::Real pitch,
+        Ogre::Real roll) {
+    torqueYawLeft   = Ogre::Vector3(     0, -yaw,     0);
+    torqueYawRight  = Ogre::Vector3(     0,  yaw,     0);
+    torquePitchUp   = Ogre::Vector3(-pitch,    0,     0);
+    torquePitchDown = Ogre::Vector3( pitch,    0,     0);
+    torqueRollLeft  = Ogre::Vector3(     0,    0, -roll);
+    torqueRollRight = Ogre::Vector3(     0,    0,  roll);
 }
 
 bool Pilotable::actionThrustForward(bool isActive) {
     if(isActive) {
-        this->thrust.z -= thrustForward;
+        this->applyForce(thrustForward);
     } else {
-        this->thrust.z += thrustForward;
+        this->applyForce(-thrustForward);
     }
     return true;
 }
 
 bool Pilotable::actionThrustReverse(bool isActive) {
     if(isActive) {
-        this->thrust.z += thrustReverse;
+        this->applyForce(thrustReverse);
     } else {
-        this->thrust.z -= thrustReverse;
+        this->applyForce(-thrustReverse);
     }
     return true;
 }
 
 bool Pilotable::actionThrustLeft(bool isActive) {
     if(isActive) {
-        this->thrust.x -= thrustLateral;
+        this->applyForce(thrustLeft);
     } else {
-        this->thrust.x += thrustLateral;
+        this->applyForce(-thrustLeft);
     }
     return true;
 }
 
 bool Pilotable::actionThrustRight(bool isActive) {
     if(isActive) {
-        this->thrust.x += thrustLateral;
+        this->applyForce(thrustRight);
     } else {
-        this->thrust.x -= thrustLateral;
+        this->applyForce(-thrustRight);
     }
     return true;
 }
 
 bool Pilotable::actionThrustUp(bool isActive) {
     if(isActive) {
-        this->thrust.y += thrustLateral;
+        this->applyForce(thrustUp);
     } else {
-        this->thrust.y -= thrustLateral;
+        this->applyForce(-thrustUp);
     }
     return true;
 }
 
 bool Pilotable::actionThrustDown(bool isActive) {
     if(isActive) {
-        this->thrust.y -= thrustLateral;
+        this->applyForce(thrustDown);
     } else {
-        this->thrust.y += thrustLateral;
+        this->applyForce(-thrustDown);
     }
     return true;
 }
 
 bool Pilotable::actionYawLeft(bool isActive) {
     if(isActive) {
-        this->torqueY -= torqueYaw;
+        this->applyTorque(torqueYawLeft);
     } else {
-        this->torqueY += torqueYaw;
+        this->applyTorque(-torqueYawLeft);
     }
-    this->setTorque();
     return true;
 }
 
 bool Pilotable::actionYawRight(bool isActive) {
     if(isActive) {
-        this->torqueY += torqueYaw;
+        this->applyTorque(torqueYawRight);
     } else {
-        this->torqueY -= torqueYaw;
+        this->applyTorque(-torqueYawRight);
     }
-    this->setTorque();
     return true;
 }
 
 bool Pilotable::actionPitchUp(bool isActive) {
     if(isActive) {
-        this->torqueX -= torquePitch;
+        this->applyTorque(torquePitchUp);
     } else {
-        this->torqueX += torquePitch;
+        this->applyTorque(-torquePitchUp);
     }
-    this->setTorque();
     return true;
 }
 
 bool Pilotable::actionPitchDown(bool isActive) {
     if(isActive) {
-        this->torqueX += torquePitch;
+        this->applyTorque(torquePitchDown);
     } else {
-        this->torqueX -= torquePitch;
+        this->applyTorque(-torquePitchDown);
     }
-    this->setTorque();
     return true;
 }
 
 bool Pilotable::actionRollLeft(bool isActive) {
     if(isActive) {
-        this->torqueZ -= torqueYaw;
+        this->applyTorque(torqueRollLeft);
     } else {
-        this->torqueZ += torqueYaw;
+        this->applyTorque(-torqueRollLeft);
     }
-    this->setTorque();
     return true;
 }
 
 bool Pilotable::actionRollRight(bool isActive) {
     if(isActive) {
-        this->torqueZ += torqueYaw;
+        this->applyTorque(torqueRollRight);
     } else {
-        this->torqueZ -= torqueYaw;
+        this->applyTorque(-torqueRollRight);
     }
-    this->setTorque();
     return true;
 }
 
-void Pilotable::setTorque() {
-    torque = Ogre::Quaternion(torqueX, Ogre::Vector3::UNIT_X)
-           * Ogre::Quaternion(torqueY, Ogre::Vector3::UNIT_Y)
-           * Ogre::Quaternion(torqueZ, Ogre::Vector3::UNIT_Z);
+void Pilotable::applyForce(Ogre::Vector3 force) {
+    this->body->applyImpulse(
+            this->body->getWorldOrientation() * force,
+            this->body->getCenterOfMassPosition());
 }
+
+void Pilotable::applyTorque(Ogre::Vector3 torque) {
+    this->body->applyImpulse(
+            this->body->getWorldOrientation() * torque,
+            this->body->getCenterOfMassPosition());
+    /*btVector3 local = btVector3(torque.x, torque.y, torque.z);
+    btVector3 global = this->body->getBulletRigidBody()->getWorldTransform() * local;
+    this->body->getBulletRigidBody()->applyTorque(global);*/
+}
+
