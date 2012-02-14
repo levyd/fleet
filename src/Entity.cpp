@@ -26,8 +26,7 @@ Entity::Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld*
         entity = scene->createEntity(properties.name, properties.mesh);
     }
 
-    node = scene->getRootSceneNode()->createChildSceneNode(properties.name,
-            properties.position, properties.orientation);
+    this->node = scene->getRootSceneNode()->createChildSceneNode(properties.name);
 
     this->entity = entity;
     if(!properties.material.empty()) {
@@ -41,8 +40,8 @@ Entity::Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld*
 
     this->body = new OgreBulletDynamics::RigidBody(properties.name, world);
     this->body->setShape(this->node, shape, properties.restitution,
-            properties.friction, properties.mass, Ogre::Vector3::ZERO,
-            Ogre::Quaternion::IDENTITY);
+            properties.friction, properties.mass, properties.position,
+            properties.orientation);
 }
 
 Entity::~Entity() {

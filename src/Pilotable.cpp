@@ -142,15 +142,12 @@ bool Pilotable::actionRollRight(bool isActive) {
 void Pilotable::applyForce(Ogre::Vector3 force) {
     this->body->applyImpulse(
             this->body->getWorldOrientation() * force,
-            this->body->getCenterOfMassPosition());
+            Ogre::Vector3::ZERO);
 }
 
 void Pilotable::applyTorque(Ogre::Vector3 torque) {
-    this->body->applyImpulse(
-            this->body->getWorldOrientation() * torque,
-            this->body->getCenterOfMassPosition());
-    /*btVector3 local = btVector3(torque.x, torque.y, torque.z);
-    btVector3 global = this->body->getBulletRigidBody()->getWorldTransform() * local;
-    this->body->getBulletRigidBody()->applyTorque(global);*/
+    Ogre::Vector3 global = this->body->getCenterOfMassOrientation() * torque;
+    btVector3 btTorque = btVector3(global.x, global.y, global.z);
+    this->body->getBulletRigidBody()->applyTorque(btTorque);
 }
 
