@@ -5,7 +5,7 @@
 
 EntityProperties::EntityProperties() : name(""), material(""), mesh(""),
     position(Ogre::Vector3::ZERO), orientation(Ogre::Quaternion::IDENTITY),
-    restitution(0.6f), friction(0.6f), mass(1.0f) {
+    restitution(0.3f), friction(0.6f), mass(1.0f) {
 }
 
 /**

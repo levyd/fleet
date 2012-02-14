@@ -13,22 +13,22 @@ Pilotable::~Pilotable() {
 
 void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev,
         Ogre::Real lat) {
-    thrustForward = Ogre::Vector3(   0,    0,  fwd);
-    thrustReverse = Ogre::Vector3(   0,    0, -rev);
+    thrustForward = Ogre::Vector3(   0,    0, -fwd);
+    thrustReverse = Ogre::Vector3(   0,    0,  rev);
     thrustLeft    = Ogre::Vector3(-lat,    0,    0);
     thrustRight   = Ogre::Vector3( lat,    0,    0);
-    thrustUp      = Ogre::Vector3(   0,  lat,    0);
-    thrustDown    = Ogre::Vector3(   0, -lat,    0);
+    thrustUp      = Ogre::Vector3(   0, -lat,    0);
+    thrustDown    = Ogre::Vector3(   0,  lat,    0);
 }
 
 void Pilotable::setRotationSpeeds(Ogre::Real yaw, Ogre::Real pitch,
         Ogre::Real roll) {
-    torqueYawLeft   = Ogre::Vector3(     0, -yaw,     0);
-    torqueYawRight  = Ogre::Vector3(     0,  yaw,     0);
-    torquePitchUp   = Ogre::Vector3(-pitch,    0,     0);
-    torquePitchDown = Ogre::Vector3( pitch,    0,     0);
-    torqueRollLeft  = Ogre::Vector3(     0,    0, -roll);
-    torqueRollRight = Ogre::Vector3(     0,    0,  roll);
+    torqueYawLeft   = Ogre::Vector3(     0,  yaw,     0);
+    torqueYawRight  = Ogre::Vector3(     0, -yaw,     0);
+    torquePitchUp   = Ogre::Vector3( pitch,    0,     0);
+    torquePitchDown = Ogre::Vector3(-pitch,    0,     0);
+    torqueRollLeft  = Ogre::Vector3(     0,    0,  roll);
+    torqueRollRight = Ogre::Vector3(     0,    0, -roll);
 }
 
 bool Pilotable::actionThrustForward(bool isActive) {
