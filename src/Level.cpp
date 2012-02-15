@@ -73,7 +73,7 @@ void Level::buildScene() {
     shipProperties.mesh = "Cruiser.mesh";
     ship = entities->createShip(shipProperties);
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
-    ship->setMovementSpeeds(Ogre::Real(100), Ogre::Real(50), Ogre::Real(10));
+    ship->setMovementSpeeds(Ogre::Real(100), Ogre::Real(50), Ogre::Real(100));
     ship->setRotationSpeeds(Ogre::Real(100), Ogre::Real(100), Ogre::Real(100));
 }
 

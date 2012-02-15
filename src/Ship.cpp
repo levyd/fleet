@@ -11,6 +11,6 @@ Ship::~Ship() {
 }
 
 bool Ship::update(Ogre::Real deltaTime) {
-    return Entity::update(deltaTime);
+    return Pilotable::update(deltaTime);
 }
 

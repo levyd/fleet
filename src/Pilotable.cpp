@@ -3,12 +3,27 @@
 #include <LinearMath/btVector3.h>
 #include <BulletDynamics/Dynamics/btRigidBody.h>
 
-Pilotable::Pilotable(OgreBulletDynamics::RigidBody* body) : body(body) {
+Pilotable::Pilotable(OgreBulletDynamics::RigidBody* body) : body(body),
+    thrust(Ogre::Vector3::ZERO), torque(Ogre::Vector3::ZERO) {
     this->setMovementSpeeds(1.0f, 1.0f, 1.0f);
     this->setRotationSpeeds(1.0f, 1.0f, 1.0f);
 }
 
 Pilotable::~Pilotable() {
+}
+
+bool Pilotable::update(Ogre::Real deltaTime) {
+    // Thrust
+    this->body->applyImpulse(this->body->getWorldOrientation() * this->thrust,
+            Ogre::Vector3::ZERO);
+
+    // Torque
+    Ogre::Vector3 global = this->body->getCenterOfMassOrientation() *
+        this->torque;
+    btVector3 btTorque = btVector3(global.x, global.y, global.z);
+    this->body->getBulletRigidBody()->applyTorque(btTorque);
+
+    return true;
 }
 
 void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev,
@@ -140,14 +155,10 @@ bool Pilotable::actionRollRight(bool isActive) {
 }
 
 void Pilotable::applyForce(Ogre::Vector3 force) {
-    this->body->applyImpulse(
-            this->body->getWorldOrientation() * force,
-            Ogre::Vector3::ZERO);
+    this->thrust = this->thrust + force;
 }
 
 void Pilotable::applyTorque(Ogre::Vector3 torque) {
-    Ogre::Vector3 global = this->body->getCenterOfMassOrientation() * torque;
-    btVector3 btTorque = btVector3(global.x, global.y, global.z);
-    this->body->getBulletRigidBody()->applyTorque(btTorque);
+    this->torque = this->torque + torque;
 }
 

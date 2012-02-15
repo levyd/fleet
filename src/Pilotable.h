@@ -12,6 +12,7 @@ public:
     Pilotable(OgreBulletDynamics::RigidBody* body);
     virtual ~Pilotable();
 
+    bool update(Ogre::Real deltaTime);
     void setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat);
     void setRotationSpeeds(Ogre::Real yaw, Ogre::Real pitch, Ogre::Real roll);
 
@@ -31,6 +32,8 @@ public:
 private:
     /** Local cache of an Entity's RigidBody */
     OgreBulletDynamics::RigidBody* body;
+    /** Current state of this object's thrusters */
+    Ogre::Vector3 thrust, torque;
     /** Forces to apply when thrust actions are performed. */
     Ogre::Vector3 thrustForward, thrustReverse, thrustLeft, thrustRight,
         thrustUp, thrustDown;
