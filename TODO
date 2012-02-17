@@ -21,6 +21,18 @@
     Radiation - kills crew after battle!
     http://history.nasa.gov/conghand/nuclear.htm
 
+    Weapon        | Damage type | Variant
+    Railgun       | Kinetic     |
+    Particle beam | Kinetic     | Cyclo, Linac, Synchro
+    Missiles      | Kinetic     | Shaped charge
+    Gamma source  | Radiation   | Gamma, X-ray
+
+    Protection           | Damage reduction
+    Ablative coating     | Kinetic
+    Faraday cage         | Electromagnetic
+    Shielded electronics | Electromagnetic
+    Lead, DU armoring    | Radiation
+
 * Weapons
     Missiles
     Turret

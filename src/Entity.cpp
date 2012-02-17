@@ -5,7 +5,8 @@
 
 EntityProperties::EntityProperties() : name(""), material(""), mesh(""),
     position(Ogre::Vector3::ZERO), orientation(Ogre::Quaternion::IDENTITY),
-    restitution(0.3f), friction(0.6f), mass(1.0f) {
+    linearFactor(0.1f), angularFactor(1.0f),
+    restitution(0.3f), friction(0.6f), mass(1000.0f) {
 }
 
 /**
@@ -42,6 +43,12 @@ Entity::Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld*
     this->body->setShape(this->node, shape, properties.restitution,
             properties.friction, properties.mass, properties.position,
             properties.orientation);
+    btVector3 linearFactor = btVector3(properties.linearFactor,
+            properties.linearFactor, properties.linearFactor);
+    this->body->getBulletRigidBody()->setLinearFactor(linearFactor);
+    btVector3 angularFactor = btVector3(properties.angularFactor,
+            properties.angularFactor, properties.angularFactor);
+    this->body->getBulletRigidBody()->setAngularFactor(angularFactor);
 }
 
 Entity::~Entity() {

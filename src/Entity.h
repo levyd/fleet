@@ -18,6 +18,8 @@ public:
     std::string mesh;
     Ogre::Vector3 position;
     Ogre::Quaternion orientation;
+    Ogre::Real linearFactor;
+    Ogre::Real angularFactor;
     Ogre::Real scale;
     Ogre::Real restitution;
     Ogre::Real friction;

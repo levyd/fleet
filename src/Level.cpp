@@ -56,10 +56,11 @@ void Level::buildScene() {
     scene->setSkyBox(true, "Sky/Stars");
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
-    //EntityProperties planetProperties;
-    //planetProperties.name = "Planet";
-    //planetProperties.position = Ogre::Vector3(200, 0, 0);
-    //entities->createPlanet(planetProperties);
+    EntityProperties planetProperties;
+    planetProperties.name = "Planet";
+    planetProperties.mass = 10000000.0f;
+    planetProperties.position = Ogre::Vector3(200, 0, 0);
+    entities->createPlanet(planetProperties);
 
     Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
     light->attachObject(scene->createLight("Light"));
@@ -71,10 +72,11 @@ void Level::buildScene() {
     shipProperties.name = "Ship/Cruiser";
     shipProperties.material = "Steel";
     shipProperties.mesh = "Cruiser.mesh";
+    shipProperties.mass = 1000.0f;
     ship = entities->createShip(shipProperties);
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
-    ship->setMovementSpeeds(Ogre::Real(100), Ogre::Real(50), Ogre::Real(100));
-    ship->setRotationSpeeds(Ogre::Real(100), Ogre::Real(100), Ogre::Real(100));
+    ship->setMovementSpeeds(Ogre::Real(1000), Ogre::Real(500), Ogre::Real(1000));
+    ship->setRotationSpeeds(Ogre::Real(100000), Ogre::Real(100000), Ogre::Real(100000));
 }
 
 void Level::launch(Ogre::RenderWindow* window) {
