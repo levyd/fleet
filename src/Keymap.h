@@ -1,7 +1,7 @@
 #include <OISJoyStick.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
-#include "Actionable.h"
+#include "entity/Actionable.h"
 
 #define NUM_KB_BUTTONS 0xFF
 

@@ -12,21 +12,21 @@
 #include <string>
 
 #include "ControllerPlayer.h"
-#include "EntityManager.h"
-#include "Ship.h"
+#include "entity/EntityManager.h"
+#include "entity/Ship.h"
 
 class Level {
 public:
-    Level();
+    Level(const std::string& name, OIS::InputManager* kb);
     ~Level();
-    void initialise(const std::string& name, OIS::InputManager* kb);
+
+    void buildScene();
+    void loadResources();
     void launch(Ogre::RenderWindow* window);
     bool update(Ogre::Real deltaTime);
+    void unloadResources();
 
 protected:
-    void loadResources();
-    void unloadResources();
-    void buildScene();
 
     std::string name;
     Ogre::SceneManager* scene;

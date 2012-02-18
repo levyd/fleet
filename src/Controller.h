@@ -3,7 +3,7 @@
 
 #include <OgrePrerequisites.h>
 
-#include "Entity.h"
+#include "entity/Entity.h"
 
 class Controller {
 public:

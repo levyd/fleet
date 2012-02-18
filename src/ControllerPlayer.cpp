@@ -1,6 +1,7 @@
 #include "ControllerPlayer.h"
 
-ControllerPlayer::ControllerPlayer(OIS::InputManager* inputManager) {
+ControllerPlayer::ControllerPlayer(OIS::InputManager* inputManager) :
+    inputManager(inputManager) {
     // Default keymap
     this->map = new Keymap();
 
@@ -28,9 +29,9 @@ ControllerPlayer::ControllerPlayer(OIS::InputManager* inputManager) {
 
 ControllerPlayer::~ControllerPlayer() {
     if(map != NULL) { delete map; }
-    if(keyboard != NULL) { inputManager->destroyInputObject(keyboard); }
-    if(mouse != NULL) { inputManager->destroyInputObject(mouse); }
-    if(joystick != NULL) { inputManager->destroyInputObject(joystick); }
+    if(keyboard != NULL) { inputManager->destroyInputObject(keyboard); keyboard = NULL; }
+    if(mouse != NULL) { inputManager->destroyInputObject(mouse); mouse = NULL; }
+    if(joystick != NULL) { inputManager->destroyInputObject(joystick); joystick = NULL; }
 }
 
 void ControllerPlayer::control(Actionable* actor) {

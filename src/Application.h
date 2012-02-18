@@ -7,7 +7,7 @@
 
 #include "Level.h"
 
-class Application : public Ogre::FrameListener, public Ogre::WindowEventListener {
+class Application : public Ogre::FrameListener {
 public:
     Application(void);
     ~Application(void);
@@ -17,7 +17,6 @@ public:
 
 protected:
     virtual bool frameRenderingQueued(const Ogre::FrameEvent& event);
-    virtual void windowClosed(Ogre::RenderWindow* rw);
 
 private:
     void loadResources(const std::string& resourcesCfg);
@@ -27,7 +26,7 @@ private:
     Ogre::RenderWindow* window;
     OIS::InputManager* inputManager;
 
-    Level level;
+    Level* level;
 };
 
 #endif

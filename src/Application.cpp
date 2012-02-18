@@ -7,9 +7,11 @@ Application::Application(void) : root(0), window(0), inputManager(0) {
 }
 
 Application::~Application(void) {
-
-    Ogre::WindowEventUtilities::removeWindowEventListener(window, this);
-    windowClosed(window);
+    if(level != NULL) { delete level; }
+    if(inputManager != NULL) {
+        OIS::InputManager::destroyInputSystem(inputManager);
+        inputManager = 0;
+    }
     delete root;
 }
 
@@ -20,37 +22,31 @@ bool Application::initialise(void) {
     if(!(root->restoreConfig() || root->showConfigDialog())) { return false; }
 
     window = root->initialise(true, "Fleet");
-    Ogre::WindowEventUtilities::addWindowEventListener(window, this);
-
     window->getCustomAttribute("WINDOW", &windowHandle);
+
     inputManager = OIS::InputManager::createInputSystem(windowHandle);
 
     this->loadResources("resources.cfg");
 
-    level.initialise("Level-1", inputManager);
+    this->level = new Level("Level-1", inputManager);
+    //this->level->loadResources();
+    this->level->buildScene();
 
     root->addFrameListener(this);
     return true;
 }
 
 void Application::launch(void) {
-    level.launch(window);
+    level->launch(window);
     root->startRendering();
+    //this->level->unloadResources();
     this->unloadResources();
 }
 
 bool Application::frameRenderingQueued(const Ogre::FrameEvent& event) {
     if(window->isClosed()) { return false; }
-    if(!level.update(event.timeSinceLastFrame)) { return false; }
+    if(!level->update(event.timeSinceLastFrame)) { return false; }
     return true;
-}
-
-void Application::windowClosed(Ogre::RenderWindow* rw) {
-    if(rw != window) { return; }
-    if(inputManager != NULL) {
-        OIS::InputManager::destroyInputSystem(inputManager);
-        inputManager = 0;
-    }
 }
 
 void Application::loadResources(const std::string& resourcesCfg) {

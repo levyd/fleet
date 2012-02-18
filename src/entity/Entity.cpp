@@ -52,9 +52,9 @@ Entity::Entity(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld*
 }
 
 Entity::~Entity() {
-    if(this->entity != NULL) { scene->destroyEntity(this->entity); }
-    if(this->node != NULL) { scene->destroySceneNode(this->node); }
     if(this->body != NULL) { delete this->body; }
+    if(this->node != NULL) { scene->destroySceneNode(this->node); }
+    if(this->entity != NULL) { scene->destroyEntity(this->entity); }
 }
 
 /** Attach a camera to this entity */

@@ -66,6 +66,7 @@ protected:
     OgreBulletDynamics::RigidBody* body;
     Ogre::Quaternion angular;
 
+    friend class EntityManager;
 };
 
 #endif

@@ -4,18 +4,8 @@
 
 #include "Level.h"
 
-Level::Level() : scene(0), camera(0), world(0), entities(0), player(0),
-    ship(0) {
-}
-
-Level::~Level() {
-    if(player != NULL) { delete player; }
-    if(entities != NULL) { delete entities; }
-    if(world != NULL) { delete world; }
-    if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
-}
-
-void Level::initialise(const std::string& levelName, OIS::InputManager* inputManager) {
+Level::Level(const std::string& levelName, OIS::InputManager* inputManager) :
+    camera(0), ship(0) {
     this->name = levelName;
 
     scene = Ogre::Root::getSingleton().createSceneManager(Ogre::ST_GENERIC, levelName);
@@ -39,9 +29,14 @@ void Level::initialise(const std::string& levelName, OIS::InputManager* inputMan
     player = new ControllerPlayer(inputManager);
     //TODO!
     //player.setKeymap();
+}
 
-    //this->loadResources();
-    this->buildScene();
+
+Level::~Level() {
+    if(player != NULL) { delete player; }
+    if(entities != NULL) { delete entities; }
+    if(world != NULL) { delete world; }
+    if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
 }
 
 void Level::loadResources() {
