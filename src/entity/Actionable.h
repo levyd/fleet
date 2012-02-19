@@ -3,17 +3,50 @@
 
 #define PERFORM(actionable, action) ((actionable)->*(action))
 
+#include <OgreMath.h>
+
 /**
- * This class defines, and provides a default implementation for, all
- * performable actions.
+ * An actionable Entity can be manipulated by user input through the use of
+ * actions. Any Entity (or module) which derives from this class should
+ * provide an implementation for some or all @ref actions defined in this file.
+ *
+ * This class provides a default implementation for all performable actions.
  */
 class Actionable {
 public:
-    Actionable();
-    virtual ~Actionable();
+    Actionable() { };
+    virtual ~Actionable() { };
 
+    /**
+     * @defgroup actions
+     *     Events that can be triggered by user input.
+     * 
+     * @{
+     *     @defgroup axis-actions
+     *         Events that can be triggered by input on an axis (e.g. a
+     *         joystick).
+     *         @see AxisAction
+     *     @ {
+     */
+    /** Default implementations have no effect */
+    virtual bool actionDefault(int old, int abs) { return false; };
+    virtual bool actionThrustForwardReverse(int old, int abs) { return false; };
+    virtual bool actionThrustLeftRight(int old, int abs) { return false; };
+    virtual bool actionThrustUpDown(int old, int abs) { return false; };
+    virtual bool actionYaw(int old, int abs) { return false; };
+    virtual bool actionPitch(int old, int abs) { return false; };
+    virtual bool actionRoll(int old, int abs) { return false; };
+
+    /**
+     *     @}
+     *     @defgroup button-actions
+     *         Events that can be triggered by input on a button (e.g. a
+     *         keyboard).
+     *         @see ButtonAction
+     *     @{
+     */
+    /** Default implementations have no effect */
     virtual bool actionDefault(bool isActive) { return false; };
-    virtual bool actionDefault(int position) { return false; };
     virtual bool actionThrustForward(bool isActive) { return false; };
     virtual bool actionThrustReverse(bool isActive) { return false; };
     virtual bool actionThrustLeft(bool isActive) { return false; };
@@ -26,9 +59,25 @@ public:
     virtual bool actionPitchDown(bool isActive) { return false; };
     virtual bool actionRollLeft(bool isActive) { return false; };
     virtual bool actionRollRight(bool isActive) { return false; };
+    /**
+     *     @}
+     * @}
+     */
 };
 
-typedef bool ((Actionable::*AxisAction)(int position));
+/**
+ * Axis actions are triggered when an axis is moved.
+ *
+ * The action is provided with the old absolute position of the axis, along with
+ * the new absolute position of the axis.
+ */
+typedef bool ((Actionable::*AxisAction)(int old, int abs));
+
+/**
+ * Button actions are triggered when a button state has changed.
+ *
+ * The action is provided with the current state of the button.
+ */
 typedef bool ((Actionable::*ButtonAction)(bool isPressed));
 
 #endif

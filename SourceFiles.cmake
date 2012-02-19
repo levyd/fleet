@@ -20,7 +20,6 @@ set(SRCS
     src/Keymap.cpp
     src/Level.cpp
     src/Main.cpp
-    src/entity/Actionable.cpp
     src/entity/Entity.cpp
     src/entity/EntityManager.cpp
     src/entity/Pilotable.cpp

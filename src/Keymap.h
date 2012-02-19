@@ -37,8 +37,8 @@ enum JoystickAxis { JS_X, JS_Y, JS_Z, JS_R, JS_S, JS_T, NUM_JS_AXIS };
 class JoystickMap {
 public:
     JoystickMap();
-    void setAxisAction(enum JoystickAxis, AxisAction action);
-    const AxisAction getAxisAction(enum JoystickAxis);
+    void setAxisAction(int id, AxisAction action);
+    const AxisAction getAxisAction(int id);
     void setButtonAction(int id, ButtonAction action);
     const ButtonAction getButtonAction(int id);
 

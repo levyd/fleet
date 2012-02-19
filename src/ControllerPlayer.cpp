@@ -19,8 +19,9 @@ ControllerPlayer::ControllerPlayer(OIS::InputManager* inputManager) :
         this->mouse = NULL;
     }
     if(inputManager->getNumberOfDevices(OIS::OISJoyStick) > 0) {
-        //this->joystick = static_cast<OIS::JoyStick*>(
-        //        inputManager->createInputObject(OIS::OISJoyStick, true));
+        this->joystick = static_cast<OIS::JoyStick*>(
+                inputManager->createInputObject(OIS::OISJoyStick, true));
+        this->joystickState = joystick->getJoyStickState();
     } else {
         this->joystick = NULL;
     }
@@ -60,67 +61,83 @@ void ControllerPlayer::setKeymap(Keymap* keymap) {
     this->map = map;
 }
 
+/**
+ * Update the state of this object after a game timestep.
+ *
+ * Captures events from input devices.
+ */
 bool ControllerPlayer::update(Ogre::Real deltaTime) {
-    this->keyboard->capture();
+    if(keyboard != NULL) {
+        this->keyboard->capture();
+    }
+    if(joystick != NULL) {
+        this->joystick->capture();
+    }
     return true;
 }
 
 bool ControllerPlayer::keyPressed(const OIS::KeyEvent& event) {
     ButtonAction action;
     action = map->kb.getButtonAction(event.key);
-    PERFORM(actor, action)(true);
-    return true;
+    return PERFORM(actor, action)(true);
 }
 
 bool ControllerPlayer::keyReleased(const OIS::KeyEvent& event) {
     ButtonAction action;
     action = map->kb.getButtonAction(event.key);
-    PERFORM(actor, action)(false);
-    return true;
+    return PERFORM(actor, action)(false);
 }
 
 bool ControllerPlayer::mouseMoved(const OIS::MouseEvent& event) {
-    return true;
+    return false;
 }
 
 bool ControllerPlayer::mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id) {
     ButtonAction action;
     action = map->ms.getButtonAction(id);
-    PERFORM(actor, action)(true);
-    return true;
+    return PERFORM(actor, action)(true);
 }
 
 bool ControllerPlayer::mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id) {
     ButtonAction action;
     action = map->ms.getButtonAction(id);
-    PERFORM(actor, action)(false);
-    return true;
+    return PERFORM(actor, action)(false);
 }
 
+#define JS_DEADZONE 500
 bool ControllerPlayer::axisMoved(const OIS::JoyStickEvent& event, int axis) {
-    return true;
+    AxisAction action = map->js.getAxisAction(axis);
+    int old = joystickState.mAxes[axis].abs;
+    int abs = event.state.mAxes[axis].abs;
+    joystickState = event.state;
+
+    if(abs < JS_DEADZONE && abs > -JS_DEADZONE) {
+        abs = 0;
+        joystickState.mAxes[axis].abs = 0;
+    }
+
+    return PERFORM(actor, action)(old, abs);
 }
 
 bool ControllerPlayer::buttonPressed(const OIS::JoyStickEvent& event, int button) {
     ButtonAction action;
     action = map->js.getButtonAction(button);
-    PERFORM(actor, action)(true);
-    return true;
+    return PERFORM(actor, action)(true);
 }
 
 bool ControllerPlayer::buttonReleased(const OIS::JoyStickEvent& event, int button) {
-    return true;
+    return false;
 }
 
 bool ControllerPlayer::povMoved(const OIS::JoyStickEvent& event, int index) {
-    return true;
+    return false;
 }
 
 bool ControllerPlayer::sliderMoved(const OIS::JoyStickEvent& event, int index) {
-    return true;
+    return false;
 }
 
 bool ControllerPlayer::vector3Moved(const OIS::JoyStickEvent& event, int index) {
-    return true;
+    return false;
 }
 

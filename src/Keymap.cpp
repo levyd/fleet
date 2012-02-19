@@ -47,11 +47,11 @@ JoystickMap::JoystickMap() {
         this->axisActions[i] = &Actionable::actionDefault;
     }
 }
-void JoystickMap::setAxisAction(enum JoystickAxis id, AxisAction action) {
+void JoystickMap::setAxisAction(int id, AxisAction action) {
     this->axisActions[id] = action;
 }
 
-const AxisAction JoystickMap::getAxisAction(enum JoystickAxis id) {
+const AxisAction JoystickMap::getAxisAction(int id) {
     return this->axisActions[id];
 }
 
@@ -87,4 +87,8 @@ Keymap::Keymap() {
     this->kb.setButtonAction(OIS::KC_NUMPAD7, &Actionable::actionRollLeft);
     this->kb.setButtonAction(OIS::KC_NUMPAD8, &Actionable::actionPitchDown);
     this->kb.setButtonAction(OIS::KC_NUMPAD9, &Actionable::actionRollRight);
+
+    this->js.setAxisAction(JS_X, &Actionable::actionYaw);
+    this->js.setAxisAction(JS_Y, &Actionable::actionPitch);
+    this->js.setAxisAction(JS_Z, &Actionable::actionThrustForwardReverse);
 }

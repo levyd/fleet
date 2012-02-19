@@ -30,6 +30,7 @@ protected:
     OIS::Keyboard* keyboard;
     OIS::Mouse* mouse;
     OIS::JoyStick* joystick;
+    OIS::JoyStickState joystickState;
 
     virtual bool keyPressed(const OIS::KeyEvent& event);
     virtual bool keyReleased(const OIS::KeyEvent& event);

@@ -16,6 +16,13 @@ public:
     void setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev, Ogre::Real lat);
     void setRotationSpeeds(Ogre::Real yaw, Ogre::Real pitch, Ogre::Real roll);
 
+    virtual bool actionThrustForwardReverse(int old, int abs);
+    virtual bool actionThrustLeftRight(int old, int abs);
+    virtual bool actionThrustUpDown(int old, int abs);
+    virtual bool actionYaw(int old, int abs);
+    virtual bool actionPitch(int old, int abs);
+    virtual bool actionRoll(int old, int abs);
+
     virtual bool actionThrustForward(bool isActive);
     virtual bool actionThrustReverse(bool isActive);
     virtual bool actionThrustLeft(bool isActive);
@@ -35,10 +42,10 @@ private:
     /** Current state of this object's thrusters */
     Ogre::Vector3 thrust, torque;
     /** Forces to apply when thrust actions are performed. */
-    Ogre::Vector3 thrustForward, thrustReverse, thrustLeft, thrustRight,
+    Ogre::Real thrustForward, thrustReverse, thrustLeft, thrustRight,
         thrustUp, thrustDown;
     /** Torques to apply when torque actions are performed. */
-    Ogre::Vector3 torqueYawLeft, torqueYawRight, torquePitchUp, torquePitchDown,
+    Ogre::Real torqueYawLeft, torqueYawRight, torquePitchUp, torquePitchDown,
         torqueRollLeft, torqueRollRight;
 
     /**
