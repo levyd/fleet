@@ -2,10 +2,11 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -Wall)
 
 set(HDRS
     src/Application.h
-    src/Controller.h
-    src/ControllerPlayer.h
-    src/Keymap.h
     src/Level.h
+    src/control/Controller.h
+    src/control/Player.h
+    src/control/Joystick.h
+    src/control/Keymap.h
     src/entity/Actionable.h
     src/entity/Entity.h
     src/entity/EntityManager.h
@@ -15,11 +16,12 @@ set(HDRS
  
 set(SRCS
     src/Application.cpp
-    src/Controller.cpp
-    src/ControllerPlayer.cpp
-    src/Keymap.cpp
     src/Level.cpp
     src/Main.cpp
+    src/control/Controller.cpp
+    src/control/Player.cpp
+    src/control/Joystick.cpp
+    src/control/Keymap.cpp
     src/entity/Entity.cpp
     src/entity/EntityManager.cpp
     src/entity/Pilotable.cpp

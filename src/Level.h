@@ -11,7 +11,7 @@
 
 #include <string>
 
-#include "ControllerPlayer.h"
+#include "control/Player.h"
 #include "entity/EntityManager.h"
 #include "entity/Ship.h"
 
@@ -34,7 +34,7 @@ protected:
     OgreBulletDynamics::DynamicsWorld* world;
 
     EntityManager* entities;
-    ControllerPlayer* player;
+    Player* player;
     Ship* ship;
 };
 #endif

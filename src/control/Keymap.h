@@ -1,7 +1,10 @@
+#ifndef _KEYMAP_H_
+#define _KEYMAP_H_
 #include <OISJoyStick.h>
 #include <OISKeyboard.h>
 #include <OISMouse.h>
-#include "entity/Actionable.h"
+
+#include "../entity/Actionable.h"
 
 #define NUM_KB_BUTTONS 0xFF
 
@@ -56,4 +59,6 @@ public:
     MouseMap ms;
     JoystickMap js;
 };
+
+#endif
 

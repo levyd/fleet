@@ -1,7 +1,6 @@
 #include <OgreConfigFile.h>
 
 #include "Application.h"
-#include "Controller.h"
 
 Application::Application(void) : root(0), window(0), inputManager(0) {
 }

@@ -3,18 +3,19 @@
 
 #include <OgrePrerequisites.h>
 
-#include "entity/Entity.h"
+#include "../entity/Actionable.h"
 
 class Controller {
 public:
     Controller();
     virtual ~Controller();
 
-    void control(Entity* entity);
+    void control(Actionable* actor);
+    void release();
     virtual bool update(Ogre::Real deltaTime) = 0;
 
-private:
-    Entity* entity;
+protected:
+    Actionable* actor;
 
 };
 #endif

@@ -26,7 +26,7 @@ Level::Level(const std::string& levelName, OIS::InputManager* inputManager) :
 
     entities = new EntityManager(scene, world);
 
-    player = new ControllerPlayer(inputManager);
+    player = new Player(inputManager);
     //TODO!
     //player.setKeymap();
 }
