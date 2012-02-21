@@ -50,6 +50,7 @@ private:
     ButtonAction buttonActions[NUM_JS_BUTTONS];
 };
 
+#define MAX_NUM_JS 4
 class Keymap {
 public:
     Keymap();
@@ -57,7 +58,7 @@ public:
 
     KeyboardMap kb;
     MouseMap ms;
-    JoystickMap js;
+    std::vector<JoystickMap*> js;
 };
 
 #endif

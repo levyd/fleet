@@ -33,8 +33,8 @@ void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev,
         Ogre::Real lat) {
     thrustForward = -fwd;
     thrustReverse = rev;
-    thrustLeft    = lat;
-    thrustRight   = -lat;
+    thrustLeft    = -lat;
+    thrustRight   = lat;
     thrustUp      = lat;
     thrustDown    = -lat;
 }

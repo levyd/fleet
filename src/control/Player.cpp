@@ -1,10 +1,17 @@
 #include "Player.h"
 
-Player::Player(OIS::InputManager* inputManager) :
-    inputManager(inputManager) {
-    // Default keymap
-    this->map = new Keymap();
-
+/**
+ * Constructs a Player object.
+ *
+ * A Player is constructed with a keyboard, a mouse, and as many Joystick as
+ * @a inputManager has detected.
+ * 
+ * A default Keymap is constructed and used.
+ *
+ * @param inputManager
+ *     The OIS::InputManager to obtain InputObjects from.
+ */
+Player::Player(OIS::InputManager* inputManager) : inputManager(inputManager) {
     if(inputManager->getNumberOfDevices(OIS::OISKeyboard) > 0) {
         this->keyboard = static_cast<OIS::Keyboard*>(
                 inputManager->createInputObject(OIS::OISKeyboard, true));
@@ -19,58 +26,92 @@ Player::Player(OIS::InputManager* inputManager) :
     } else {
         this->mouse = NULL;
     }
-    if(inputManager->getNumberOfDevices(OIS::OISJoyStick) > 0) {
+    for(int i = 0; i < inputManager->getNumberOfDevices(OIS::OISJoyStick); i++) {
         OIS::JoyStick* js = static_cast<OIS::JoyStick*>(
                 inputManager->createInputObject(OIS::OISJoyStick, true));
-        this->joystick = new Joystick(js);
-        this->joystick->setKeymap(&(this->map->js));
-    } else {
-        this->joystick = NULL;
+        Joystick* joystick = new Joystick(js);
+        joysticks.push_back(joystick);
     }
 
+    // Default keymap - this needs to be deleted
+    this->map = new Keymap();
+    this->setKeymap(this->map);
 }
 
 Player::~Player() {
     if(map != NULL) { delete map; }
     if(keyboard != NULL) { inputManager->destroyInputObject(keyboard); keyboard = NULL; }
     if(mouse != NULL) { inputManager->destroyInputObject(mouse); mouse = NULL; }
-    inputManager->destroyInputObject(joystick->getInputObject());
+    for(unsigned i = 0; i < joysticks.size(); i++) {
+        inputManager->destroyInputObject(joysticks[i]->getInputObject());
+    }
 }
 
+/**
+ * Begin controlling the specified @a actor.
+ *
+ * Input events from this Player's devices will begin to call the action
+ * handlers of the specified @a actor.
+ *
+ * You may also want to specify a {@link Keymap} for this Player with
+ * Player::setKeymap().
+ *
+ * @param actor
+ *     The actor to begin controlling.
+ */
 void Player::control(Actionable* actor) {
     this->actor = actor;
     if(this->keyboard != NULL) { this->keyboard->setEventCallback(this); }
     if(this->mouse != NULL) { this->mouse->setEventCallback(this); }
-    this->joystick->control(actor);
-}
-
-void Player::release() {
-    this->keyboard->setEventCallback(NULL);
-    this->mouse->setEventCallback(NULL);
-    this->joystick->release();
+    for(unsigned i = 0; i < joysticks.size(); i++) {
+        joysticks[i]->control(actor);
+    }
 }
 
 /**
- * Use the specified keymap to translate events into actions.
+ * Stop controlling this Player's current Player::actor.
+ *
+ * Input events from this Player's devices will no longer call the action
+ * handlers of this Player's Player::actor.
+ */
+void Player::release() {
+    if(this->keyboard != NULL) { this->keyboard->setEventCallback(NULL); }
+    if(this->mouse != NULL) { this->mouse->setEventCallback(NULL); }
+    for(unsigned i = 0; i < joysticks.size(); i++) {
+        joysticks[i]->release();
+    }
+}
+
+/**
+ * Use the specified {@link Keymap} to translate events into actions.
  *
  * @param keymap
  *     The new keymap to use.
  */
 void Player::setKeymap(Keymap* keymap) {
     this->map = keymap;
-    this->joystick->setKeymap(&(this->map->js));
+    for(unsigned i = 0; i < joysticks.size() && i < this->map->js.size(); i++) {
+        joysticks[i]->setKeymap(this->map->js[i]);
+    }
 }
 
 /**
  * Update the state of this object after a game timestep.
  *
  * Captures events from input devices.
+ *
+ * @param deltaTime
+ *     The interval of time that has passed since the last update.
  */
 bool Player::update(Ogre::Real deltaTime) {
     if(keyboard != NULL) {
         this->keyboard->capture();
     }
-    return joystick->update(deltaTime);
+    bool status = true;
+    for(unsigned i = 0; i < joysticks.size(); i++) {
+        status = status && joysticks[i]->update(deltaTime);
+    }
+    return status;
 }
 
 bool Player::keyPressed(const OIS::KeyEvent& event) {

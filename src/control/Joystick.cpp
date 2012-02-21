@@ -55,7 +55,9 @@ bool Joystick::buttonPressed(const OIS::JoyStickEvent& event, int button) {
 }
 
 bool Joystick::buttonReleased(const OIS::JoyStickEvent& event, int button) {
-    return false;
+    ButtonAction action;
+    action = map->getButtonAction(button);
+    return PERFORM(actor, action)(false);
 }
 
 bool Joystick::povMoved(const OIS::JoyStickEvent& event, int index) {

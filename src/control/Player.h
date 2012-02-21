@@ -22,7 +22,7 @@ public:
     bool update(Ogre::Real deltaTime);
 
 protected:
-    Joystick* joystick;
+    std::vector<Joystick*> joysticks;
     Keymap* map;
 
     OIS::InputManager* inputManager;

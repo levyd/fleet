@@ -71,7 +71,7 @@ Keymap::Keymap(const std::string file) {
 }
 
 /**
- * Build the default keymap.
+ * Constructs a default keymap.
  */
 Keymap::Keymap() {
     this->kb.setButtonAction(OIS::KC_W, &Actionable::actionThrustForward);
@@ -88,7 +88,17 @@ Keymap::Keymap() {
     this->kb.setButtonAction(OIS::KC_NUMPAD8, &Actionable::actionPitchDown);
     this->kb.setButtonAction(OIS::KC_NUMPAD9, &Actionable::actionRollRight);
 
-    this->js.setAxisAction(JS_X, &Actionable::actionYaw);
-    this->js.setAxisAction(JS_Y, &Actionable::actionPitch);
-    this->js.setAxisAction(JS_Z, &Actionable::actionThrustForwardReverse);
+    JoystickMap* jmap = new JoystickMap();
+    this->js.push_back(jmap);
+    this->js[0]->setAxisAction(JS_X, &Actionable::actionYaw);
+    this->js[0]->setAxisAction(JS_Y, &Actionable::actionPitch);
+    this->js[0]->setButtonAction(3, &Actionable::actionRollLeft);
+    this->js[0]->setButtonAction(4, &Actionable::actionRollRight);
+
+    jmap = new JoystickMap();
+    this->js.push_back(jmap);
+    this->js[1]->setAxisAction(JS_X, &Actionable::actionThrustLeftRight);
+    this->js[1]->setAxisAction(JS_Y, &Actionable::actionThrustForwardReverse);
+    this->js[1]->setButtonAction(1, &Actionable::actionThrustDown);
+    this->js[1]->setButtonAction(2, &Actionable::actionThrustUp);
 }
