@@ -18,7 +18,7 @@ public:
 
     void control(Actionable* actor);
     void release();
-    void setKeymap(Keymap* keymap);
+    Keymap* setKeymap(Keymap* keymap);
     bool update(Ogre::Real deltaTime);
 
 protected:

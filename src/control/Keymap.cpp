@@ -129,36 +129,9 @@ const ButtonAction JoystickMap::getButtonAction(int id) {
 ActionNameMap Keymap::actionNames;
 
 /**
- * Constructs a default keymap.
+ * Constructs an empty keymap.
  */
 Keymap::Keymap() {
-    this->kb.setButtonAction(OIS::KC_W, &Actionable::actionThrustForward);
-    this->kb.setButtonAction(OIS::KC_A, &Actionable::actionThrustLeft);
-    this->kb.setButtonAction(OIS::KC_S, &Actionable::actionThrustReverse);
-    this->kb.setButtonAction(OIS::KC_D, &Actionable::actionThrustRight);
-    this->kb.setButtonAction(OIS::KC_Q, &Actionable::actionThrustDown);
-    this->kb.setButtonAction(OIS::KC_E, &Actionable::actionThrustUp);
-
-    this->kb.setButtonAction(OIS::KC_NUMPAD2, &Actionable::actionPitchUp);
-    this->kb.setButtonAction(OIS::KC_NUMPAD4, &Actionable::actionYawLeft);
-    this->kb.setButtonAction(OIS::KC_NUMPAD6, &Actionable::actionYawRight);
-    this->kb.setButtonAction(OIS::KC_NUMPAD7, &Actionable::actionRollLeft);
-    this->kb.setButtonAction(OIS::KC_NUMPAD8, &Actionable::actionPitchDown);
-    this->kb.setButtonAction(OIS::KC_NUMPAD9, &Actionable::actionRollRight);
-
-    JoystickMap* jmap = new JoystickMap();
-    this->js.push_back(jmap);
-    this->js[0]->setAxisAction(JS_X, &Actionable::actionYaw);
-    this->js[0]->setAxisAction(JS_Y, &Actionable::actionPitch);
-    this->js[0]->setButtonAction(3, &Actionable::actionRollLeft);
-    this->js[0]->setButtonAction(4, &Actionable::actionRollRight);
-
-    jmap = new JoystickMap();
-    this->js.push_back(jmap);
-    this->js[1]->setAxisAction(JS_X, &Actionable::actionThrustLeftRight);
-    this->js[1]->setAxisAction(JS_Y, &Actionable::actionThrustForwardReverse);
-    this->js[1]->setButtonAction(1, &Actionable::actionThrustDown);
-    this->js[1]->setButtonAction(2, &Actionable::actionThrustUp);
 }
 
 /**

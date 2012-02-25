@@ -72,6 +72,9 @@ void Level::buildScene() {
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
     ship->setMovementSpeeds(Ogre::Real(1000), Ogre::Real(500), Ogre::Real(1000));
     ship->setRotationSpeeds(Ogre::Real(100000), Ogre::Real(100000), Ogre::Real(100000));
+
+    Keymap* oldKeymap = player->setKeymap(new Keymap("../res/keymap/pilot.xml"));
+    delete oldKeymap;
 }
 
 void Level::launch(Ogre::RenderWindow* window) {

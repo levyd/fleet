@@ -6,8 +6,21 @@ KeyNameMap::KeyNameMap() {
     this->keyCodes["b"] = OIS::KC_B;
     this->keyCodes["c"] = OIS::KC_C;
     this->keyCodes["d"] = OIS::KC_D;
+    this->keyCodes["e"] = OIS::KC_E;
+    this->keyCodes["q"] = OIS::KC_Q;
     this->keyCodes["s"] = OIS::KC_S;
     this->keyCodes["w"] = OIS::KC_W;
+
+    this->keyCodes["numpad-0"] = OIS::KC_NUMPAD0;
+    this->keyCodes["numpad-1"] = OIS::KC_NUMPAD1;
+    this->keyCodes["numpad-2"] = OIS::KC_NUMPAD2;
+    this->keyCodes["numpad-3"] = OIS::KC_NUMPAD3;
+    this->keyCodes["numpad-4"] = OIS::KC_NUMPAD4;
+    this->keyCodes["numpad-5"] = OIS::KC_NUMPAD5;
+    this->keyCodes["numpad-6"] = OIS::KC_NUMPAD6;
+    this->keyCodes["numpad-7"] = OIS::KC_NUMPAD7;
+    this->keyCodes["numpad-8"] = OIS::KC_NUMPAD8;
+    this->keyCodes["numpad-9"] = OIS::KC_NUMPAD9;
 }
 
 OIS::KeyCode KeyNameMap::getKeyCode(std::string name) {
@@ -60,14 +73,27 @@ int JoystickNameMap::getButtonID(std::string name) {
 }
 
 ActionNameMap::ActionNameMap() {
-    this->axisActions["yaw"] = &Actionable::actionYaw;
+    this->axisActions["thrust-forwardreverse"] = &Actionable::actionThrustForwardReverse;
+    this->axisActions["thrust-leftright"] = &Actionable::actionThrustLeftRight;
+    this->axisActions["thrust-updown"] = &Actionable::actionThrustUpDown;
 
-    this->buttonActions["forward-thrust"] = &Actionable::actionThrustForward;
-    this->buttonActions["reverse-thrust"] = &Actionable::actionThrustReverse;
-    this->buttonActions["left-thrust"] = &Actionable::actionThrustLeft;
-    this->buttonActions["right-thrust"] = &Actionable::actionThrustRight;
-    this->buttonActions["up-thrust"] = &Actionable::actionThrustUp;
-    this->buttonActions["down-thrust"] = &Actionable::actionThrustDown;
+    this->axisActions["yaw"] = &Actionable::actionYaw;
+    this->axisActions["pitch"] = &Actionable::actionPitch;
+    this->axisActions["roll"] = &Actionable::actionRoll;
+
+    this->buttonActions["thrust-forward"] = &Actionable::actionThrustForward;
+    this->buttonActions["thrust-reverse"] = &Actionable::actionThrustReverse;
+    this->buttonActions["thrust-left"] = &Actionable::actionThrustLeft;
+    this->buttonActions["thrust-right"] = &Actionable::actionThrustRight;
+    this->buttonActions["thrust-up"] = &Actionable::actionThrustUp;
+    this->buttonActions["thrust-down"] = &Actionable::actionThrustDown;
+
+    this->buttonActions["yaw-left"] = &Actionable::actionYawLeft;
+    this->buttonActions["yaw-right"] = &Actionable::actionYawRight;
+    this->buttonActions["pitch-up"] = &Actionable::actionPitchUp;
+    this->buttonActions["pitch-down"] = &Actionable::actionPitchDown;
+    this->buttonActions["roll-left"] = &Actionable::actionRollLeft;
+    this->buttonActions["roll-right"] = &Actionable::actionRollRight;
 }
 
 AxisAction ActionNameMap::getAxisAction(std::string name) {

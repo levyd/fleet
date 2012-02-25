@@ -2,27 +2,50 @@
 <keymap name="pilot">
     <device type="keyboard">
         <button value="w">
-            <action value="forward-thrust"/>
+            <action value="thrust-forward"/>
         </button>
         <button value="a">
-            <action value="left-thrust"/>
+            <action value="thrust-left"/>
         </button>
         <button value="s">
-            <action value="reverse-thrust"/>
+            <action value="thrust-reverse"/>
         </button>
         <button value="d">
-            <action value="right-thrust"/>
+            <action value="thrust-right"/>
         </button>
         <button value="q">
-            <action value="down-thrust"/>
+            <action value="thrust-down"/>
         </button>
         <button value="e">
-            <action value="up-thrust"/>
+            <action value="thrust-up"/>
         </button>
     </device>
     <device type="joystick">
         <axis value="x">
             <action value="yaw"/>
         </axis>
+        <axis value="y">
+            <action value="pitch"/>
+        </axis>
+        <button value="4">
+            <action value="roll-left"/>
+        </button>
+        <button value="5">
+            <action value="roll-right"/>
+        </button>
+    </device>
+    <device type="joystick">
+        <axis value="x">
+            <action value="thrust-leftright"/>
+        </axis>
+        <axis value="y">
+            <action value="thrust-forwardreverse"/>
+        </axis>
+        <button value="2">
+            <action value="thrust-down"/>
+        </button>
+        <button value="3">
+            <action value="thrust-up"/>
+        </button>
     </device>
 </keymap>

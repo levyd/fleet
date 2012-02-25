@@ -33,7 +33,6 @@ Player::Player(OIS::InputManager* inputManager) : inputManager(inputManager) {
         joysticks.push_back(joystick);
     }
 
-    // Default keymap - this needs to be deleted
     this->map = new Keymap();
     this->setKeymap(this->map);
 }
@@ -87,12 +86,17 @@ void Player::release() {
  *
  * @param keymap
  *     The new keymap to use.
+ * @return
+ *     The keymap that was in use prior to this function. The caller might use
+ *     the old keymap elsewhere, or delete it.
  */
-void Player::setKeymap(Keymap* keymap) {
+Keymap* Player::setKeymap(Keymap* keymap) {
+    Keymap* old = this->map;
     this->map = keymap;
     for(unsigned i = 0; i < joysticks.size() && i < this->map->js.size(); i++) {
         joysticks[i]->setKeymap(this->map->js[i]);
     }
+    return old;
 }
 
 /**
