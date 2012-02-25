@@ -22,7 +22,7 @@
     </device>
     <device type="joystick">
         <axis value="x">
-            <action value="yaw">
+            <action value="yaw"/>
         </axis>
     </device>
 </keymap>

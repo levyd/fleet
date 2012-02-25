@@ -3,8 +3,6 @@
 
 #define PERFORM(actionable, action) ((actionable)->*(action))
 
-#include <OgreMath.h>
-
 /**
  * An actionable Entity can be manipulated by user input through the use of
  * actions. Any Entity (or module) which derives from this class should

@@ -7,11 +7,13 @@ set(HDRS
     src/control/Player.h
     src/control/Joystick.h
     src/control/Keymap.h
+    src/control/NameMap.h
     src/entity/Actionable.h
     src/entity/Entity.h
     src/entity/EntityManager.h
     src/entity/Pilotable.h
     src/entity/Ship.h
+    src/util/Xml.h
 )
  
 set(SRCS
@@ -22,9 +24,11 @@ set(SRCS
     src/control/Player.cpp
     src/control/Joystick.cpp
     src/control/Keymap.cpp
+    src/control/NameMap.cpp
     src/entity/Entity.cpp
     src/entity/EntityManager.cpp
     src/entity/Pilotable.cpp
     src/entity/Ship.cpp
+    src/util/Xml.cpp
 )
  

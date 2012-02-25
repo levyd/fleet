@@ -13,12 +13,12 @@ if(UNIX)
     if(EXISTS "/usr/local/lib/OGRE/cmake")
 
       set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-      set(OGRE_SAMPLES_INCLUDEPATH "/usr/local/share/OGRE/samples/Common/include/") # We could just *assume* that developers uses this basepath : /usr/local
+      set(OGRE_SAMPLES_INCLUDEPATH "/usr/local/share/OGRE/samples/Common/include/")
 
     elseif(EXISTS "/usr/lib/OGRE/cmake")
 
       set(CMAKE_MODULE_PATH "/usr/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-      set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/") # Otherwise, this one
+      set(OGRE_SAMPLES_INCLUDEPATH "/usr/share/OGRE/samples/Common/include/")
 
     else ()
       message(SEND_ERROR "Failed to find module path.")
@@ -32,21 +32,10 @@ set(CMAKE_DEBUG_POSTFIX "_d")
 set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_BINARY_DIR}")
  
 find_package(OGRE REQUIRED)
- 
-#if(NOT "${OGRE_VERSION_NAME}" STREQUAL "Cthugha")
-#  message(SEND_ERROR "You need Ogre 1.7 Cthugha to build this.")
-#endif()
- 
 find_package(OIS REQUIRED)
-
 find_package(BULLET REQUIRED)
- 
 find_package(OGREBULLET REQUIRED)
 
-if(NOT OIS_FOUND)
-    message(SEND_ERROR "Failed to find OIS.")
-endif()
- 
 # Find Boost
 if (NOT OGRE_BUILD_PLATFORM_IPHONE)
     if (WIN32 OR APPLE)
@@ -80,7 +69,9 @@ endif()
  
 include(SourceFiles.cmake)
 
-include_directories( ${OIS_INCLUDE_DIRS}
+include_directories(
+    ./lib/rapidxml-1.13
+    ${OIS_INCLUDE_DIRS}
     ${OGRE_INCLUDE_DIRS}
     ${BULLET_INCLUDE_DIRS}
     ${OGREBULLET_INCLUDE_DIRS}
@@ -88,6 +79,8 @@ include_directories( ${OIS_INCLUDE_DIRS}
 )
  
 add_executable(fleet WIN32 ${HDRS} ${SRCS})
+
+include(test/Tests.cmake)
  
 set_target_properties(fleet PROPERTIES DEBUG_POSTFIX _d)
  
@@ -95,8 +88,8 @@ target_link_libraries(fleet ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${BULLET_LIBRARIE
  
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin)
  
-add_custom_command(TARGET fleet POST_BUILD COMMAND ctags -R
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src
+add_custom_command(TARGET fleet POST_BUILD COMMAND ctags -R ${CMAKE_SOURCE_DIR}/src
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Generating ctags" VERBATIM
 )
 
