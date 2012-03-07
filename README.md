@@ -1,4 +1,4 @@
-fleet
+fleet                                                               {#mainpage}
 =====
 
 A game of space warfare!

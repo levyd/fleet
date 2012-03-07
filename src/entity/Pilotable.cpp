@@ -15,6 +15,14 @@ Pilotable::Pilotable(OgreBulletDynamics::RigidBody* body) : body(body),
 Pilotable::~Pilotable() {
 }
 
+/**
+ * Update the state of this object after a game timestep.
+ *
+ * Applies the active thrust and torque forces to this entity's body.
+ *
+ * @param deltaTime 
+ *     The interval of time that has passed since the last update.
+ */
 bool Pilotable::update(Ogre::Real deltaTime) {
     // Thrust
     this->body->applyImpulse(this->body->getWorldOrientation() * this->thrust,
@@ -29,6 +37,9 @@ bool Pilotable::update(Ogre::Real deltaTime) {
     return true;
 }
 
+/**
+ * Sets the maximum thrust that can be applied to this entity.
+ */
 void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev,
         Ogre::Real lat) {
     thrustForward = -fwd;
@@ -39,6 +50,9 @@ void Pilotable::setMovementSpeeds(Ogre::Real fwd, Ogre::Real rev,
     thrustDown    = -lat;
 }
 
+/**
+ * Sets the maximum torque that can be applied to this entity.
+ */
 void Pilotable::setRotationSpeeds(Ogre::Real yaw, Ogre::Real pitch,
         Ogre::Real roll) {
     torqueYawLeft   = yaw;
@@ -209,13 +223,5 @@ bool Pilotable::actionRollRight(bool isActive) {
         this->torque.z = 0;
     }
     return true;
-}
-
-void Pilotable::applyForce(Ogre::Vector3 force) {
-    this->thrust = this->thrust + force;
-}
-
-void Pilotable::applyTorque(Ogre::Vector3 torque) {
-    this->torque = this->torque + torque;
 }
 

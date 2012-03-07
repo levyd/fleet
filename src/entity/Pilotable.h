@@ -7,7 +7,13 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include "Actionable.h"
 
-class Pilotable : public Actionable {
+/**
+ * Handles movement actions.
+ *
+ * Entities deriving from this class can propel themselves around the game
+ * environment.
+ */
+class Pilotable : virtual public Actionable {
 public:
     Pilotable(OgreBulletDynamics::RigidBody* body);
     virtual ~Pilotable();
@@ -47,28 +53,6 @@ private:
     /** Torques to apply when torque actions are performed. */
     Ogre::Real torqueYawLeft, torqueYawRight, torquePitchUp, torquePitchDown,
         torqueRollLeft, torqueRollRight;
-
-    /**
-     * Applies a force to this Entity's body.
-     *
-     * The parameter @a force should be given in the Entity's local coordinate
-     * system. It will be translated into the global coordinate system before
-     * being applied to the body's center of mass.
-     *
-     * @param force The force to apply, specified in local coordinates.
-     */
-    void applyForce(Ogre::Vector3 force);
-
-    /**
-     * Applies a torque to this Entity's body.
-     *
-     * The parameter @a torque should be given in the Entity's local coordinate
-     * system. It will be translated into the global coordinate system before
-     * being applied to the body.
-     *
-     * @param torque The torque to apply, specified in local coordinates.
-     */
-    void applyTorque(Ogre::Vector3 torque);
 };
 
 #endif

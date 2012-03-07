@@ -51,7 +51,7 @@ XmlDocument::XmlDocument(const std::string filename) {
 XmlDocument::~XmlDocument() {
     xml->clear();
     delete this->xml;
-    delete this->buffer;
+    delete [] this->buffer;
 }
 
 XmlNode XmlDocument::getRootNode(std::string tag) {

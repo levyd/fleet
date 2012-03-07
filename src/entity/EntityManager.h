@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "Missile.h"
 #include "Ship.h"
 
 class EntityManager {
@@ -16,10 +17,11 @@ public:
             OgreBulletDynamics::DynamicsWorld* world);
     virtual ~EntityManager();
 
-    Entity* createEntity(EntityProperties& properties);
-    Entity* createPlanet(EntityProperties& properties);
-    Ship*   createShip(EntityProperties& properties);
-    bool    update(Ogre::Real deltaTime);
+    Entity*  createEntity(EntityProperties& properties);
+    Entity*  createPlanet(EntityProperties& properties);
+    Ship*    createShip(EntityProperties& properties);
+    Missile* createMissile(EntityProperties& properties);
+    bool     update(Ogre::Real deltaTime);
 
     void useScene(Ogre::SceneManager* scene,
             OgreBulletDynamics::DynamicsWorld* world);
@@ -36,6 +38,9 @@ private:
 
     std::vector<Entity*> entities;
     std::map<const btRigidBody*, Entity*> objectMap;
+
+    // TEMPORARY - DON'T ADD MORE COUNTERS
+    int numMissiles;
 };
 
 #endif

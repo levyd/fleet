@@ -27,6 +27,9 @@
         <axis value="y">
             <action value="pitch"/>
         </axis>
+        <button value="1">
+            <action value="fire-primary"/>
+        </button>
         <button value="4">
             <action value="roll-left"/>
         </button>

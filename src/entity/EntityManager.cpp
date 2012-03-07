@@ -3,6 +3,8 @@
 #include "EntityManager.h"
 #include "CollisionListener.h"
 
+#include <iostream>
+
 /**
  * The currently registered EntityManager, which is responsible for notifying
  * Entities when they collide.
@@ -41,6 +43,7 @@ bool CollisionCallback(btManifoldPoint& cp, const btCollisionObject* colObj0,
 EntityManager::EntityManager(Ogre::SceneManager* scene,
         OgreBulletDynamics::DynamicsWorld* world) : scene(scene),
     world(world) {
+        numMissiles = 0;
     this->registerAsSingleton();
 }
 
@@ -116,6 +119,17 @@ Entity* EntityManager::createEntity(EntityProperties& properties) {
 }
 
 /**
+ * Navigating weapon Entity. Currently flies straight forward.
+ */
+Missile* EntityManager::createMissile(EntityProperties& properties) {
+    properties.name = "Missile" + Ogre::StringConverter::toString(numMissiles++);
+    std::cout << "Missile name: \"" << properties.name << "\"" << std::endl;
+    properties.mesh = "Missile.mesh";
+    properties.material = "Steel";
+    return (Missile*)this->add(new Missile(this->scene, this->world, properties));
+}
+
+/**
  * Simple round-body Entity. Uses an Ogre PrefabType instead of a supplied
  * mesh.
  */
@@ -133,6 +147,14 @@ Ship* EntityManager::createShip(EntityProperties& properties) {
     return (Ship*)this->add(new Ship(this->scene, this->world, properties));
 }
 
+/**
+ * Update the state of each Entity after a game timestep.
+ *
+ * Updates each Entity that is managed by this EntityManager.
+ *
+ * @param deltaTime 
+ *     The interval of time that has passed since the last update.
+ */
 bool EntityManager::update(Ogre::Real deltaTime) {
     std::vector<Entity*>::iterator i;
     for(i = entities.begin(); i < entities.end(); i++) {
@@ -159,7 +181,7 @@ void EntityManager::useScene(Ogre::SceneManager* scene,
 }
 
 /**
- * Manage the Entity @entity, as if it were created by this EntityManager.
+ * Manage the Entity @a entity, as if it were created by this EntityManager.
  *
  * This could be useful for transferring Entities between worlds, when used in
  * conjunction with {@link remove}.
@@ -171,7 +193,7 @@ Entity* EntityManager::add(Entity* entity) {
 }
 
 /**
- * Stop managing the Entity @entity.
+ * Stop managing the Entity @a entity.
  *
  * This could be useful for transferring Entities between worlds, when used in
  * conjunction with {@link add}.

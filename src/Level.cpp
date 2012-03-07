@@ -3,7 +3,18 @@
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
 #include "Level.h"
+#include "entity/weapon/MissileLauncher.h"
 
+/**
+ * Constructor.
+ *
+ * @param levelName
+ *     The unique name for this level. This name will be used to load the
+ *     level's resource group.
+ * @param inputManager
+ *     The OIS InputManager to acquire input devices from. This will more than
+ *     likely be refactored once Application supports more than one level.
+ */
 Level::Level(const std::string& levelName, OIS::InputManager* inputManager) :
     camera(0), ship(0) {
     this->name = levelName;
@@ -39,14 +50,19 @@ Level::~Level() {
     if(scene != NULL) { Ogre::Root::getSingleton().destroySceneManager(scene); }
 }
 
+/** Loads this level's resources. */
 void Level::loadResources() {
     Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(this->name);
 }
 
+/** Unloads this level's resources. */
 void Level::unloadResources() {
     Ogre::ResourceGroupManager::getSingleton().destroyResourceGroup(this->name);
 }
 
+/**
+ * Constructs the visible entities that are specific to this scene.
+ */
 void Level::buildScene() {
     scene->setSkyBox(true, "Sky/Stars");
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
@@ -57,7 +73,8 @@ void Level::buildScene() {
     planetProperties.position = Ogre::Vector3(200, 0, 0);
     entities->createPlanet(planetProperties);
 
-    Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode("Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
+    Ogre::SceneNode* light = scene->getRootSceneNode()->createChildSceneNode(
+            "Light", Ogre::Vector3(200, 20, 0), Ogre::Quaternion::IDENTITY);
     light->attachObject(scene->createLight("Light"));
 
     camera = scene->createCamera("Camera");
@@ -71,12 +88,26 @@ void Level::buildScene() {
     ship = entities->createShip(shipProperties);
     ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
     ship->setMovementSpeeds(Ogre::Real(1000), Ogre::Real(500), Ogre::Real(1000));
-    ship->setRotationSpeeds(Ogre::Real(100000), Ogre::Real(100000), Ogre::Real(100000));
+    ship->setRotationSpeeds(
+            Ogre::Real(100000), Ogre::Real(100000), Ogre::Real(100000));
+
+    MissileLauncher* launcher = 
+        new MissileLauncher(ship, Ogre::Vector3(50, 0, 0), this->entities);
+    ship->attachWeapon(launcher);
 
     Keymap* oldKeymap = player->setKeymap(new Keymap("../res/keymap/pilot.xml"));
     delete oldKeymap;
 }
 
+/**
+ * Activates this level.
+ *
+ * Attaches this level to @a window, which makes the level visible, and
+ * activates player control of the appropriate entities.
+ *
+ * @param window
+ *     The Ogre RenderWindow to attach this level to.
+ */
 void Level::launch(Ogre::RenderWindow* window) {
     window->removeAllViewports();
     Ogre::Viewport* viewport = window->addViewport(camera, 0, 0, 0, 1, 1);
@@ -85,6 +116,17 @@ void Level::launch(Ogre::RenderWindow* window) {
     player->control(ship);
 }
 
+/**
+ * Update the state of this level after a game timestep.
+ *
+ * Updates the elements of this level, in the following order:
+ * 1. each Entity's internal state,
+ * 2. the physics simulation,
+ * 3. player input.
+ *
+ * @param deltaTime 
+ *     The interval of time that has passed since the last update.
+ */
 bool Level::update(Ogre::Real deltaTime) {
     entities->update(deltaTime);
     world->stepSimulation(deltaTime);

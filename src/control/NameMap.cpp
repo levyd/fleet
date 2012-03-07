@@ -94,6 +94,8 @@ ActionNameMap::ActionNameMap() {
     this->buttonActions["pitch-down"] = &Actionable::actionPitchDown;
     this->buttonActions["roll-left"] = &Actionable::actionRollLeft;
     this->buttonActions["roll-right"] = &Actionable::actionRollRight;
+
+    this->buttonActions["fire-primary"] = &Actionable::actionWeaponFire;
 }
 
 AxisAction ActionNameMap::getAxisAction(std::string name) {

@@ -2,12 +2,12 @@
 #define _SHIP_H_
 
 #include <OgreSceneManager.h>
-#include <string>
 
+#include "Armed.h"
 #include "Entity.h"
 #include "Pilotable.h"
 
-class Ship : public Entity, public Pilotable {
+class Ship : public Entity, public Pilotable, public Armed {
 public:
     Ship(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world,
             EntityProperties properties);

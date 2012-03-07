@@ -1,5 +1,9 @@
+#ifndef _COLLISION_LISTENER_H_
+#define _COLLISION_LISTENER_H_
 class CollisionListener {
 public:
-    bool onCollision(Entity* other) { return false; };
+    virtual bool onCollision(Entity* other) { return false; };
 };
+
+#endif
 
