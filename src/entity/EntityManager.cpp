@@ -75,6 +75,7 @@ EntityManager::~EntityManager() {
  */
 void EntityManager::registerAsSingleton() {
     if(SINGLETON == NULL) { SINGLETON = this; }
+    Ogre::LogManager::getSingleton().logMessage("Registered collision callback.");
     gContactAddedCallback = &CollisionCallback;
 }
 
@@ -93,13 +94,14 @@ bool EntityManager::onCollision(btManifoldPoint& cp, const btCollisionObject*
         entity1 = objectMap[rb1];
     }
 
+    bool isModified = false;
     if(entity0 != NULL) {
         CollisionListener* listener = dynamic_cast<CollisionListener*>(entity1);
         if(listener != NULL) {
             // Notify this listener that it has collided with another object.
             // Note that the other btRigidBody might not have been associated
             // with an Entity.
-            listener->onCollision(entity1);
+            isModified = listener->onCollision(entity0) || isModified;
         }
     }
     if(entity1 != NULL) {
@@ -108,10 +110,10 @@ bool EntityManager::onCollision(btManifoldPoint& cp, const btCollisionObject*
             // Notify this listener that it has collided with another object.
             // Note that the other btRigidBody might not have been associated
             // with an Entity.
-            listener->onCollision(entity0);
+            isModified = listener->onCollision(entity1) || isModified;
         }
     }
-    return false;
+    return isModified;
 }
 
 Entity* EntityManager::createEntity(EntityProperties& properties) {
@@ -123,7 +125,6 @@ Entity* EntityManager::createEntity(EntityProperties& properties) {
  */
 Missile* EntityManager::createMissile(EntityProperties& properties) {
     properties.name = "Missile" + Ogre::StringConverter::toString(numMissiles++);
-    std::cout << "Missile name: \"" << properties.name << "\"" << std::endl;
     properties.mesh = "Missile.mesh";
     properties.material = "Steel";
     return (Missile*)this->add(new Missile(this->scene, this->world, properties));

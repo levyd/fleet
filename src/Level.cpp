@@ -81,22 +81,29 @@ void Level::buildScene() {
     camera->setNearClipDistance(5);
 
     EntityProperties shipProperties;
-    shipProperties.name = "Ship/Cruiser";
-    shipProperties.material = "Steel";
-    shipProperties.mesh = "Cruiser.mesh";
+    shipProperties.name = "Ship/Fighter";
+    shipProperties.material = "Fighter";
+    shipProperties.mesh = "Fighter.mesh";
     shipProperties.mass = 1000.0f;
     ship = entities->createShip(shipProperties);
-    ship->attachCamera(camera, Ogre::Vector3(0, 20, 120));
-    ship->setMovementSpeeds(Ogre::Real(1000), Ogre::Real(500), Ogre::Real(1000));
+    ship->attachCamera(camera, Ogre::Vector3(0, 5, 20));
+    ship->setMovementSpeeds(Ogre::Real(10000), Ogre::Real(5000), Ogre::Real(10000));
     ship->setRotationSpeeds(
-            Ogre::Real(100000), Ogre::Real(100000), Ogre::Real(100000));
+            Ogre::Real(10000), Ogre::Real(10000), Ogre::Real(10000));
 
     MissileLauncher* launcher = 
-        new MissileLauncher(ship, Ogre::Vector3(50, 0, 0), this->entities);
+        new MissileLauncher(ship, Ogre::Vector3(10, 0, 0), this->entities);
     ship->attachWeapon(launcher);
 
     Keymap* oldKeymap = player->setKeymap(new Keymap("../res/keymap/pilot.xml"));
     delete oldKeymap;
+
+    EntityProperties targetProperties;
+    targetProperties.name = "Ship/Cruiser";
+    targetProperties.material = "Steel";
+    targetProperties.mesh = "Cruiser.mesh";
+    targetProperties.position = Ogre::Vector3(0, 0, -70);
+    entities->createShip(targetProperties);
 }
 
 /**

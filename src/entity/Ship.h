@@ -4,10 +4,11 @@
 #include <OgreSceneManager.h>
 
 #include "Armed.h"
+#include "Destructible.h"
 #include "Entity.h"
 #include "Pilotable.h"
 
-class Ship : public Entity, public Pilotable, public Armed {
+class Ship : public Entity, public Pilotable, public Armed, public Destructible {
 public:
     Ship(Ogre::SceneManager* scene, OgreBulletDynamics::DynamicsWorld* world,
             EntityProperties properties);

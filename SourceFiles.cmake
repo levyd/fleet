@@ -10,6 +10,8 @@ set(HDRS
     src/control/NameMap.h
     src/entity/Actionable.h
     src/entity/Armed.h
+    src/entity/CollisionListener.h
+    src/entity/Destructible.h
     src/entity/Entity.h
     src/entity/EntityManager.h
     src/entity/Missile.h
@@ -31,6 +33,8 @@ set(SRCS
     src/control/Keymap.cpp
     src/control/NameMap.cpp
     src/entity/Armed.cpp
+    src/entity/CollisionListener.cpp
+    src/entity/Destructible.cpp
     src/entity/Entity.cpp
     src/entity/EntityManager.cpp
     src/entity/Missile.cpp

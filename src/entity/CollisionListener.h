@@ -1,8 +1,14 @@
 #ifndef _COLLISION_LISTENER_H_
 #define _COLLISION_LISTENER_H_
+
+#include <OgreBulletDynamicsRigidBody.h>
+#include "Entity.h"
+
 class CollisionListener {
 public:
-    virtual bool onCollision(Entity* other) { return false; };
+    static void enableCallback(OgreBulletDynamics::RigidBody* body);
+
+    virtual bool onCollision(Entity* other);
 };
 
 #endif

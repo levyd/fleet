@@ -10,10 +10,6 @@
     Gunner
     Commander?
 
-* Input System
-    Unified keyboard, joystick, mouse (In progress - levyd)
-    Mappings to/from file
-
 * Damage System
     Kinetic/Explosive
     EMR
