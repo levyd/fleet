@@ -11,6 +11,7 @@ Application::~Application(void) {
         OIS::InputManager::destroyInputSystem(inputManager);
         inputManager = 0;
     }
+    if(console) { delete console; }
     delete root;
 }
 
@@ -30,6 +31,9 @@ bool Application::initialise(void) {
     this->level = new Level("Level-1", inputManager);
     //this->level->loadResources();
     this->level->buildScene();
+
+    this->console = new OgreConsole();
+    OgreConsole::getSingleton().isVisible = true;
 
     root->addFrameListener(this);
     return true;

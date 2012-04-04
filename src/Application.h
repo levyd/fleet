@@ -6,6 +6,7 @@
 #include <OgreWindowEventUtilities.h>
 
 #include "Level.h"
+#include "util/Console.h"
 
 class Application : public Ogre::FrameListener {
 public:
@@ -25,6 +26,8 @@ private:
     Ogre::Root* root;
     Ogre::RenderWindow* window;
     OIS::InputManager* inputManager;
+
+    OgreConsole* console;
 
     Level* level;
 };

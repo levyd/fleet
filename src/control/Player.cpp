@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../util/Console.h"
 
 /**
  * Constructs a Player object.
@@ -119,6 +120,7 @@ bool Player::update(Ogre::Real deltaTime) {
 }
 
 bool Player::keyPressed(const OIS::KeyEvent& event) {
+    OgreConsole::getSingleton().onKeyPressed(event);
     ButtonAction action;
     action = map->kb.getButtonAction(event.key);
     return PERFORM(actor, action)(true);

@@ -17,6 +17,7 @@ set(HDRS
     src/entity/Ship.h
     src/entity/weapon/MissileLauncher.h
     src/entity/weapon/Weapon.h
+    src/util/Console.h
     src/util/Xml.h
 )
  
@@ -37,6 +38,7 @@ set(SRCS
     src/entity/Ship.cpp
     src/entity/weapon/MissileLauncher.cpp
     src/entity/weapon/Weapon.cpp
+    src/util/Console.cpp
     src/util/Xml.cpp
 )
  
