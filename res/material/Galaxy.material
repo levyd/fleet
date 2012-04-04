@@ -1,0 +1,13 @@
+material Sky/Galaxy
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                cubic_texture galaxy.jpg separateUV
+            }
+        }
+    }
+}

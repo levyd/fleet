@@ -64,7 +64,7 @@ void Level::unloadResources() {
  * Constructs the visible entities that are specific to this scene.
  */
 void Level::buildScene() {
-    scene->setSkyBox(true, "Sky/Stars");
+    scene->setSkyBox(true, "Sky/Galaxy");
     scene->setAmbientLight(Ogre::ColourValue(0.3, 0.3, 0.3));
 
     EntityProperties planetProperties;
