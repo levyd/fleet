@@ -23,7 +23,8 @@ void Destructible::damage(int amount) {
 
     this->hitpoints -= amount;
     if(this->hitpoints <= 0) {
-        Ogre::LogManager::getSingleton().logMessage("<this> has died.");
+        Ogre::LogManager::getSingleton().logMessage(std::string(typeid(*this).name()) +
+                " has died.");
         this->hitpoints = 0;
     }
 }

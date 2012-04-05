@@ -18,6 +18,7 @@ public:
 
 private:
     Ogre::Real fuelTime;
+    bool hasCollided;
 };
 
 #endif

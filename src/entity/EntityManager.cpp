@@ -57,8 +57,8 @@ EntityManager::EntityManager(Ogre::SceneManager* scene,
  * destructor will unregister itself from that role.
  */
 EntityManager::~EntityManager() {
-    std::vector<Entity*>::iterator i;
-    for(i = entities.begin(); i < entities.end(); i++) {
+    std::list<Entity*>::iterator i;
+    for(i = entities.begin(); i != entities.end(); i++) {
         if(*i != NULL) {
             delete *i;
         }
@@ -141,7 +141,7 @@ Entity* EntityManager::createPlanet(EntityProperties& properties) {
 }
 
 /**
- * Pilotable, [armed?] Entity. Potentially controlled by either a player or
+ * Pilotable, Armed Entity. Potentially controlled by either a player or
  * AI.
  */
 Ship* EntityManager::createShip(EntityProperties& properties) {
@@ -157,13 +157,16 @@ Ship* EntityManager::createShip(EntityProperties& properties) {
  *     The interval of time that has passed since the last update.
  */
 bool EntityManager::update(Ogre::Real deltaTime) {
-    std::vector<Entity*>::iterator i;
-    for(i = entities.begin(); i < entities.end(); i++) {
-        if(*i == NULL) {
-            continue;
-        }
-        if((*i)->update(deltaTime) == false) {
-            return false;
+    std::list<Entity*>::iterator it = entities.begin();
+    while(it != entities.end()) {
+        if(*it == NULL) {
+            entities.erase(it);
+        } else if((*it)->update(deltaTime) == false) {
+            Entity* destroyed = *it;
+            it =  remove(it);
+            delete destroyed;
+        } else {
+            ++it;
         }
     }
     return true;
@@ -196,12 +199,48 @@ Entity* EntityManager::add(Entity* entity) {
 /**
  * Stop managing the Entity @a entity.
  *
+ * Searches for @a entity, removing it if found.
+ *
  * This could be useful for transferring Entities between worlds, when used in
  * conjunction with {@link add}.
+ *
+ * @param entity
+ *     The Entity to find and remove.
  */
-/*Entity* EntityManager::remove(Entity* entity) {
-    TODO: Write find(entities, entity) or change vector to map<Entity*, bool?>
-    entities.erase(entities.find(entity));
-    objectMap.erase(entity->body->getShape()->getBulletObject());
-    return entity;
-}*/
+void EntityManager::remove(Entity* entity) {
+    this->remove(this->find(entity));
+}
+
+/**
+ * Remove the specified Entity from internal data structures.
+ *
+ * @param it
+ *     An iterator from the entities list, pointing to the element to be
+ *     removed. The iterator @c entities.end() will be ignored.
+ * @return
+ *     A valid iterator from the entities list, pointing to the element after
+ *     the now-removed Entity, or @c entities.end() if it was the last element
+ *     in the list.
+ */
+std::list<Entity*>::iterator EntityManager::remove(std::list<Entity*>::iterator it) {
+    if(it == entities.end()) {
+        return entities.end();
+    }
+
+    objectMap.erase((*it)->body->getBulletRigidBody());
+    return entities.erase(it);
+}
+
+
+/**
+ */
+std::list<Entity*>::iterator EntityManager::find(Entity* entity) {
+    std::list<Entity*>::iterator i;
+    for(i = entities.begin(); i != entities.end(); ++i) {
+        if(*i == entity) {
+            break;
+        }
+    }
+    return i;
+}
+

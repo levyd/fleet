@@ -15,6 +15,7 @@ Ship::~Ship() {
 
 bool Ship::update(Ogre::Real deltaTime) {
     Armed::update(deltaTime);
-    return Pilotable::update(deltaTime);
+    Pilotable::update(deltaTime);
+    return (this->getHitpoints() > 0);
 }
 

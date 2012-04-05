@@ -5,7 +5,7 @@
 #include <OgreBulletDynamicsWorld.h>
 
 #include <string>
-#include <vector>
+#include <list>
 
 #include "Entity.h"
 #include "Missile.h"
@@ -26,6 +26,7 @@ public:
     void useScene(Ogre::SceneManager* scene,
             OgreBulletDynamics::DynamicsWorld* world);
     Entity* add(Entity* entity);
+    void remove(Entity* entity);
 
     void registerAsSingleton();
     bool onCollision(btManifoldPoint& cp, const btCollisionObject* colObj0,
@@ -33,10 +34,13 @@ public:
             int partId1, int index1);
 
 private:
+    std::list<Entity*>::iterator find(Entity* entity);
+    std::list<Entity*>::iterator remove(std::list<Entity*>::iterator it);
+
     Ogre::SceneManager* scene;
     OgreBulletDynamics::DynamicsWorld* world;
 
-    std::vector<Entity*> entities;
+    std::list<Entity*> entities;
     std::map<const btRigidBody*, Entity*> objectMap;
 
     // TEMPORARY - DON'T ADD MORE COUNTERS
